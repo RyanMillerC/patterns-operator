@@ -1,0 +1,12 @@
+apiVersion: gitops.hybrid-cloud-patterns.io/v1alpha1
+kind: PatternCatalogSource
+metadata:
+  labels:
+    app.kubernetes.io/name: patterncatalogsource
+    app.kubernetes.io/instance: patterncatalogsource-sample
+    app.kubernetes.io/part-of: patterns-operator
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: patterns-operator
+  name: patterncatalogsource-sample
+spec:
+  # TODO(user): Add fields here
