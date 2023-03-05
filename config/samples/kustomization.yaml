@@ -2,4 +2,5 @@
 resources:
 - gitops_v1alpha1_pattern.yaml
 - gitops_v1alpha1_patterncatalogsource.yaml
+- gitops_v1alpha1_patternmanifest.yaml
 #+kubebuilder:scaffold:manifestskustomizesamples
