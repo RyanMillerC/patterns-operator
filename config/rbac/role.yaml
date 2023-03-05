@@ -55,6 +55,58 @@ rules:
 - apiGroups:
   - gitops.hybrid-cloud-patterns.io
   resources:
+  - patterncatalogsources
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - gitops.hybrid-cloud-patterns.io
+  resources:
+  - patterncatalogsources/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - gitops.hybrid-cloud-patterns.io
+  resources:
+  - patterncatalogsources/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - gitops.hybrid-cloud-patterns.io
+  resources:
+  - patternmanifests
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - gitops.hybrid-cloud-patterns.io
+  resources:
+  - patternmanifests/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - gitops.hybrid-cloud-patterns.io
+  resources:
+  - patternmanifests/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - gitops.hybrid-cloud-patterns.io
+  resources:
   - patterns
   verbs:
   - create
