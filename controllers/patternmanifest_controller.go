@@ -19,18 +19,23 @@ package controllers
 import (
 	"context"
 
+	kerrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-	"sigs.k8s.io/controller-runtime/pkg/log"
+	klog "sigs.k8s.io/controller-runtime/pkg/log"
+	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 
-	gitopsv1alpha1 "github.com/hybrid-cloud-patterns/patterns-operator/api/v1alpha1"
+	"github.com/go-logr/logr"
+	api "github.com/hybrid-cloud-patterns/patterns-operator/api/v1alpha1"
 )
 
 // PatternManifestReconciler reconciles a PatternManifest object
 type PatternManifestReconciler struct {
 	client.Client
 	Scheme *runtime.Scheme
+
+	logger logr.Logger
 }
 
 //+kubebuilder:rbac:groups=gitops.hybrid-cloud-patterns.io,resources=patternmanifests,verbs=get;list;watch;create;update;patch;delete
@@ -47,9 +52,34 @@ type PatternManifestReconciler struct {
 // For more details, check Reconcile and its Result here:
 // - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.13.0/pkg/reconcile
 func (r *PatternManifestReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
-	_ = log.FromContext(ctx)
+	r.logger = klog.FromContext(ctx)
 
-	// TODO(user): your logic here
+	r.logger.Info("Reconciling PatternCatalogSource")
+
+	// Logger includes name and namespace
+	// Its also wants arguments in pairs, eg.
+	// r.logger.Error(err, fmt.Sprintf("[%s/%s] %s", p.Name, p.ObjectMeta.Namespace, reason))
+	// Or r.logger.Error(err, "message", "name", p.Name, "namespace", p.ObjectMeta.Namespace, "reason", reason))
+
+	// Fetch the PatternManifest instance
+	instance := &api.PatternManifest{}
+	err := r.Client.Get(context.TODO(), req.NamespacedName, instance)
+	if err != nil {
+		if kerrors.IsNotFound(err) {
+			// Request object not found, could have been deleted after reconcile request.
+			// Owned objects are automatically garbage collected. For additional cleanup logic use finalizers.
+			// Return and don't requeue
+			r.logger.Info("Pattern not found")
+			return reconcile.Result{}, nil
+		}
+		// Error reading the object - requeue the request.
+		r.logger.Info("Error reading the request object, requeuing.")
+		return reconcile.Result{}, err
+	}
+
+	// Log the instance name
+	// TODO: Actually do something here
+	r.logger.Info(instance.Name)
 
 	return ctrl.Result{}, nil
 }
@@ -57,6 +87,6 @@ func (r *PatternManifestReconciler) Reconcile(ctx context.Context, req ctrl.Requ
 // SetupWithManager sets up the controller with the Manager.
 func (r *PatternManifestReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	return ctrl.NewControllerManagedBy(mgr).
-		For(&gitopsv1alpha1.PatternManifest{}).
+		For(&api.PatternManifest{}).
 		Complete(r)
 }
