@@ -1,0 +1,27 @@
+# permissions for end users to view patternmanifests.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: clusterrole
+    app.kubernetes.io/instance: patternmanifest-viewer-role
+    app.kubernetes.io/component: rbac
+    app.kubernetes.io/created-by: patterns-operator
+    app.kubernetes.io/part-of: patterns-operator
+    app.kubernetes.io/managed-by: kustomize
+  name: patternmanifest-viewer-role
+rules:
+- apiGroups:
+  - gitops.hybrid-cloud-patterns.io
+  resources:
+  - patternmanifests
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - gitops.hybrid-cloud-patterns.io
+  resources:
+  - patternmanifests/status
+  verbs:
+  - get
