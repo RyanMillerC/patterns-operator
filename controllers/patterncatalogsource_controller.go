@@ -77,9 +77,33 @@ func (r *PatternCatalogSourceReconciler) Reconcile(ctx context.Context, req ctrl
 		return reconcile.Result{}, err
 	}
 
-	// Log the instance name
-	// TODO: Actually do something here
-	r.logger.Info(instance.Name)
+	url := instance.Spec.Source
+	catalog, err := getCatalogYAML(url)
+	if err != nil {
+		r.logger.Error(err, "Error pulling YAML catalog from source")
+		return ctrl.Result{}, err
+	}
+
+	r.logger.Info("catalog", catalog)
+
+	//for _, pattern := range catalog.Patterns {
+	patternManfiestsOwnedByUs := &api.PatternManifestList{}
+	getPatternManifestsOwnedByUs(r, instance, patternManfiestsOwnedByUs)
+	r.logger.Info("patternManifestsOwnedByUs", patternManfiestsOwnedByUs)
+
+	// Check if PatternManifest exists
+	// If it doesn't, create it
+	// Check if PatternManifest needs updates
+	// If it does, update it
+
+	// For PatternManifest that is owned by us
+	// If Don't exist in the Catalog YAML
+	// - Determine this by looking at the name of the pattern
+
+	//needsUpdated := checkIfPatternManfestNeedsUpdated
+	// }
+
+	// &client.ListOptions{}
 
 	return ctrl.Result{}, nil
 }

@@ -4,7 +4,6 @@
 
 On new PatternCatalogSource...
 
-* Check for URL to YAML source in spec; If not found, error
 * Get YAML from URL
 * Convert YAML to native type
 * For each pattern identified in catalog YAML
@@ -18,10 +17,13 @@ On new PatternCatalogSource...
 package controllers
 
 import (
+	"context"
 	"io"
 	"net/http"
 
 	"gopkg.in/yaml.v3"
+	"k8s.io/apimachinery/pkg/labels"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	api "github.com/hybrid-cloud-patterns/patterns-operator/api/v1alpha1"
 )
@@ -70,12 +72,20 @@ func getCatalogYAML(url string) (*PatternCatalog, error) {
 }
 
 // Called by the PatternCatalogSource reconciler on each catalog source action
-func processCatalogSource(pcs *api.PatternCatalogSource) error {
-	// TODO: Implement
-	return nil
-}
+// func processCatalogSource(pcs *api.PatternCatalogSource) error {
+// }
 
-func createCatalogManifest(Pattern string) error {
-	// TODO: Implement
+// Given a PatternCatalogSource instance pointer and an empty
+// PatternManifestList pointer, find PatternManifests that are owned by the
+// PatternCatalogSource and add them to the PatternManifestList.
+func getPatternManifestsOwnedByUs(r *PatternCatalogSourceReconciler, pcs *api.PatternCatalogSource, pms *api.PatternManifestList) error {
+	lbs := map[string]string{
+		"gitops.hybrid-cloud-patterns.io/source": pcs.Name,
+	}
+	labelSelector := labels.SelectorFromSet(lbs)
+	listOps := &client.ListOptions{Namespace: pcs.Namespace, LabelSelector: labelSelector}
+	if err := r.List(context.TODO(), pms, listOps); err != nil {
+		return err
+	}
 	return nil
 }

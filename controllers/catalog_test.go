@@ -56,3 +56,7 @@ patterns:
 		t.Errorf("Expected length of catalog.patterns to be 3, got %d", len(catalog.Patterns))
 	}
 }
+
+func TestGetPatternManifestsOwnedByUs(t *testing.T) {
+	// TODO: Find a good way to test this
+}
