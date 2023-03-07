@@ -20,4 +20,6 @@ case $1 in
     "run") EXTRA="run";;
     *)	EXTRA="build -o manager";;
 esac
-GOFLAGS=-mod=vendor CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go $EXTRA -ldflags="${LDFLAGS}" main.go
+
+# TODO: Revert this back to linux/amd64
+GOFLAGS=-mod=vendor CGO_ENABLED=0 GOOS=darwin GOARCH=arm64 go $EXTRA -ldflags="${LDFLAGS}" main.go
