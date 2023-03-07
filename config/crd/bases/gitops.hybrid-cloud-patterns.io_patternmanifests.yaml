@@ -36,9 +36,26 @@ spec:
           spec:
             description: PatternManifestSpec defines the desired state of PatternManifest
             properties:
-              foo:
-                description: Foo is an example field of PatternManifest. Edit patternmanifest_types.go
-                  to remove/update
+              branch:
+                description: Git Branch to use for the pattern
+                type: string
+              description:
+                description: Description of the pattern
+                type: string
+              maintainers:
+                description: Email address of the maintainers of the pattern
+                type: string
+              products:
+                description: Products used by the pattern
+                items:
+                  properties:
+                    name:
+                      description: Name of the product
+                      type: string
+                  type: object
+                type: array
+              url:
+                description: URL to the Git repo for the pattern
                 type: string
             type: object
           status:
