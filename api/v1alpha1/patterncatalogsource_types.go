@@ -28,14 +28,17 @@ type PatternCatalogSourceSpec struct {
 	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
 
-	// Foo is an example field of PatternCatalogSource. Edit patterncatalogsource_types.go to remove/update
-	Foo string `json:"foo,omitempty"`
+	// Source is a URL to a YAML catalog file. This should start with http/https
+	Source string `json:"source,omitempty"`
 }
 
 // PatternCatalogSourceStatus defines the observed state of PatternCatalogSource
 type PatternCatalogSourceStatus struct {
 	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
+
+	// LastUpdateTime is the last time the YAML catalog file was synced
+	LastUpdateTime metav1.Time `json:"lastUpdateTime,omitempty"`
 }
 
 //+kubebuilder:object:root=true

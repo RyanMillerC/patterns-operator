@@ -37,14 +37,20 @@ spec:
           spec:
             description: PatternCatalogSourceSpec defines the desired state of PatternCatalogSource
             properties:
-              foo:
-                description: Foo is an example field of PatternCatalogSource. Edit
-                  patterncatalogsource_types.go to remove/update
+              source:
+                description: Source is a URL to a YAML catalog file. This should start
+                  with http/https
                 type: string
             type: object
           status:
             description: PatternCatalogSourceStatus defines the observed state of
               PatternCatalogSource
+            properties:
+              lastUpdateTime:
+                description: LastUpdateTime is the last time the YAML catalog file
+                  was synced
+                format: date-time
+                type: string
             type: object
         type: object
     served: true
