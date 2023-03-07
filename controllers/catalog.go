@@ -28,26 +28,23 @@ import (
 
 // Generated using https://zhwt.github.io/yaml-to-go/
 type PatternCatalog struct {
-	Version      string       `yaml:"version"`
-	Organization Organization `yaml:"organization"`
-	Patterns     []Patterns   `yaml:"patterns"`
-}
-type Organization struct {
-	Name        string `yaml:"name"`
-	OrgURL      string `yaml:"org-url"`
-	Description string `yaml:"description"`
-	Maintainers string `yaml:"maintainers"`
-}
-type Products struct {
-	Name string `yaml:"name"`
-}
-type Patterns struct {
-	Name        string     `yaml:"name"`
-	Description string     `yaml:"description"`
-	PatternURL  string     `yaml:"pattern-url"`
-	Products    []Products `yaml:"products"`
-	Branch      string     `yaml:"branch"`
-	Maintainers string     `yaml:"maintainers"`
+	Version      string `yaml:"version"`
+	Organization struct {
+		Name        string `yaml:"name"`
+		OrgURL      string `yaml:"org-url"`
+		Description string `yaml:"description"`
+		Maintainers string `yaml:"maintainers"`
+	} `yaml:"organization"`
+	Patterns []struct {
+		Name        string `yaml:"name"`
+		Description string `yaml:"description"`
+		PatternURL  string `yaml:"pattern-url"`
+		Products    []struct {
+			Name string `yaml:"name"`
+		} `yaml:"products"`
+		Branch      string `yaml:"branch"`
+		Maintainers string `yaml:"maintainers"`
+	} `yaml:"patterns"`
 }
 
 // Given a URL to a catalog.yaml file, fetch that file, and return a object of
@@ -78,7 +75,7 @@ func processCatalogSource(pcs *api.PatternCatalogSource) error {
 	return nil
 }
 
-func createCatalogManifest(notSureYet string) error {
+func createCatalogManifest(Pattern string) error {
 	// TODO: Implement
 	return nil
 }
