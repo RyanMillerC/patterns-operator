@@ -23,13 +23,30 @@ import (
 // EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
 // NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
 
+type PatternManifestProduct struct {
+	// Name of the product
+	Name string `json:"name,omitempty"`
+}
+
 // PatternManifestSpec defines the desired state of PatternManifest
 type PatternManifestSpec struct {
 	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
 
-	// Foo is an example field of PatternManifest. Edit patternmanifest_types.go to remove/update
-	Foo string `json:"foo,omitempty"`
+	// Git Branch to use for the pattern
+	Branch string `json:"branch,omitempty"`
+
+	// Description of the pattern
+	Description string `json:"description,omitempty"`
+
+	// Email address of the maintainers of the pattern
+	Maintainers string `json:"maintainers,omitempty"`
+
+	// Products used by the pattern
+	Products []PatternManifestProduct `json:"products,omitempty"`
+
+	// URL to the Git repo for the pattern
+	URL string `json:"url,omitempty"`
 }
 
 // PatternManifestStatus defines the observed state of PatternManifest
