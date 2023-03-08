@@ -24,3 +24,6 @@ testbin/*
 *.swo
 *~
 manager
+
+# Ignore console from other branch
+/console
