@@ -14,7 +14,7 @@ spec:
     url: https://github.com/hybrid-cloud-patterns
   pattern:
     name: Industrial Edge
-    shortDescription: A horizontal solution for Industrial Edge use cases.
+    shortDescription: A horizontal solution for Industrial Edge use cases
     longDescription: >
       This pattern demonstrates a horizontal solution for Industrial Edge use
       cases. It is derived from the MANUela work done by Red Hat Middleware
