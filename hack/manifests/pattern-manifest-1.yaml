@@ -1,0 +1,18 @@
+# Example PatternCatalogSource for testing
+apiVersion: gitops.hybrid-cloud-patterns.io/v1alpha1
+kind: PatternManifest
+metadata:
+  name: multi-cloud-gitops
+  namespace: default
+spec:
+  branch: main
+  description: >
+    This pattern demonstrates a simple architecture for managing multiple
+    clusters using GitOps. It can be used as a good starting point for
+    experimenting with other products in a multi-cluster architecture.
+  maintainers: team-validated-patterns@redhat.com
+  url: https://github.com/hybrid-cloud-patterns/multicloud-gitops
+  products:
+    - name: Red Hat Advanced Cluster Management
+    - name: Red Hat OpenShift GitOps
+    - name: Hashicorp Vault

@@ -1,7 +1,0 @@
-# Example PatternCatalogSource for testing
-apiVersion: gitops.hybrid-cloud-patterns.io/v1alpha1
-kind: PatternManifest
-metadata:
-  name: my-pattern-manifest
-  namespace: default
-spec: {}
