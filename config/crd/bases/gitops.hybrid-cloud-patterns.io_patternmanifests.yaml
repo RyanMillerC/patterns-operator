@@ -36,27 +36,69 @@ spec:
           spec:
             description: PatternManifestSpec defines the desired state of PatternManifest
             properties:
-              branch:
-                description: Git Branch to use for the pattern
-                type: string
-              description:
-                description: Description of the pattern
-                type: string
-              maintainers:
-                description: Email address of the maintainers of the pattern
-                type: string
-              products:
-                description: Products used by the pattern
-                items:
-                  properties:
-                    name:
-                      description: Name of the product
-                      type: string
-                  type: object
-                type: array
-              url:
-                description: URL to the Git repo for the pattern
-                type: string
+              organization:
+                description: Information about the organization that provides this
+                  pattern
+                properties:
+                  description:
+                    description: Description of the organization that provides this
+                      pattern
+                    type: string
+                  maintainers:
+                    description: 'Email address of the maintainers of the organization
+                      that provides this pattern. NOTE: this can be a different than
+                      the maintainers of the pattern itself.'
+                    type: string
+                  name:
+                    description: Name of the organization that provides this pattern
+                    type: string
+                  url:
+                    description: URL of the organization that provides this pattern
+                    type: string
+                type: object
+              pattern:
+                description: Information about the pattern
+                properties:
+                  badge:
+                    description: Badge text to display in the catalog view
+                    type: string
+                  branch:
+                    description: Git Branch to use for the pattern
+                    type: string
+                  longDescription:
+                    description: Longer description of the pattern. Will be used in
+                      the catalog when a user clicks on the card to see detauls for
+                      this pattern.
+                    type: string
+                  maintainers:
+                    description: Email address of the maintainers of the pattern
+                    type: string
+                  name:
+                    description: Display name of the pattern. This should have spaces
+                      and capitalization.
+                    type: string
+                  products:
+                    description: Products used by the pattern
+                    items:
+                      properties:
+                        name:
+                          description: Name of the product
+                          type: string
+                        version:
+                          description: Version of the product. Try to stick to major/minor
+                            release versions instead of specific patch versions.
+                          type: string
+                      type: object
+                    type: array
+                  shortDescription:
+                    description: Short description of the pattern. Will be used in
+                      the catalog on the card for this pattern. If it's too long,
+                      the catalog will truncate the text.
+                    type: string
+                  url:
+                    description: URL to the Git repo for the pattern
+                    type: string
+                type: object
             type: object
           status:
             description: PatternManifestStatus defines the observed state of PatternManifest

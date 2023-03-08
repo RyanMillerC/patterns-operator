@@ -23,9 +23,57 @@ import (
 // EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
 // NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
 
+type PatternManifestSpecOrganization struct {
+	// Name of the organization that provides this pattern
+	Name string `json:"name,omitempty"`
+
+	// Description of the organization that provides this pattern
+	Description string `json:"description,omitempty"`
+
+	// Email address of the maintainers of the organization that provides this
+	// pattern. NOTE: this can be a different than the maintainers of the pattern
+	// itself.
+	Maintainers string `json:"maintainers,omitempty"`
+
+	// URL of the organization that provides this pattern
+	URL string `json:"url,omitempty"`
+}
+
+type PatternManifestSpecPattern struct {
+	// Badge text to display in the catalog view
+	Badge string `json:"badge,omitempty"`
+
+	// Git Branch to use for the pattern
+	Branch string `json:"branch,omitempty"`
+
+	// Short description of the pattern. Will be used in the catalog on the card
+	// for this pattern. If it's too long, the catalog will truncate the text.
+	ShortDescription string `json:"shortDescription,omitempty"`
+
+	// Longer description of the pattern. Will be used in the catalog when a
+	// user clicks on the card to see detauls for this pattern.
+	LongDescription string `json:"longDescription,omitempty"`
+
+	// Email address of the maintainers of the pattern
+	Maintainers string `json:"maintainers,omitempty"`
+
+	// Display name of the pattern. This should have spaces and capitalization.
+	Name string `json:"name,omitempty"`
+
+	// Products used by the pattern
+	Products []PatternManifestProduct `json:"products,omitempty"`
+
+	// URL to the Git repo for the pattern
+	URL string `json:"url,omitempty"`
+}
+
 type PatternManifestProduct struct {
 	// Name of the product
 	Name string `json:"name,omitempty"`
+
+	// Version of the product. Try to stick to major/minor release versions
+	// instead of specific patch versions.
+	Version string `json:"version,omitempty"`
 }
 
 // PatternManifestSpec defines the desired state of PatternManifest
@@ -33,20 +81,11 @@ type PatternManifestSpec struct {
 	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
 
-	// Git Branch to use for the pattern
-	Branch string `json:"branch,omitempty"`
+	// Information about the organization that provides this pattern
+	Organization PatternManifestSpecOrganization `json:"organization,omitempty"`
 
-	// Description of the pattern
-	Description string `json:"description,omitempty"`
-
-	// Email address of the maintainers of the pattern
-	Maintainers string `json:"maintainers,omitempty"`
-
-	// Products used by the pattern
-	Products []PatternManifestProduct `json:"products,omitempty"`
-
-	// URL to the Git repo for the pattern
-	URL string `json:"url,omitempty"`
+	// Information about the pattern
+	Pattern PatternManifestSpecPattern `json:"pattern,omitempty"`
 }
 
 // PatternManifestStatus defines the observed state of PatternManifest
