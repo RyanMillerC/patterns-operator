@@ -4,4 +4,5 @@ kind: PatternCatalogSource
 metadata:
   name: my-pattern-catalog
   namespace: default
-spec: {}
+spec:
+  source: 'https://raw.githubusercontent.com/RyanMillerC/pattern-catalog/main/catalog.yaml'

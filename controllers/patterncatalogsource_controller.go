@@ -18,6 +18,7 @@ package controllers
 
 import (
 	"context"
+	"fmt"
 
 	kerrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -78,6 +79,11 @@ func (r *PatternCatalogSourceReconciler) Reconcile(ctx context.Context, req ctrl
 	}
 
 	url := instance.Spec.Source
+	if url == "" {
+		err = fmt.Errorf("unable to pull YAML catalog because spec.source is not set on %s", instance.Name)
+		return ctrl.Result{}, err
+	}
+	r.logger.Info("Pulling YAML catalog from", url)
 	catalog, err := getCatalogYAML(url)
 	if err != nil {
 		r.logger.Error(err, "Error pulling YAML catalog from source")
@@ -88,8 +94,16 @@ func (r *PatternCatalogSourceReconciler) Reconcile(ctx context.Context, req ctrl
 
 	//for _, pattern := range catalog.Patterns {
 	patternManfiestsOwnedByUs := &api.PatternManifestList{}
-	getPatternManifestsOwnedByUs(r, instance, patternManfiestsOwnedByUs)
-	r.logger.Info("patternManifestsOwnedByUs", patternManfiestsOwnedByUs)
+	err = getPatternManifestsOwnedByUs(r, instance, patternManfiestsOwnedByUs)
+	if err != nil {
+		return ctrl.Result{}, err
+	}
+
+	if len(patternManfiestsOwnedByUs.Items) > 0 {
+		r.logger.Info("patternManifestsOwnedByUs", patternManfiestsOwnedByUs)
+	} else {
+		r.logger.Info("No PatternManifests owned by us")
+	}
 
 	// Check if PatternManifest exists
 	// If it doesn't, create it
