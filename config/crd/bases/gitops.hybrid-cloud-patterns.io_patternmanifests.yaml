@@ -101,6 +101,11 @@ spec:
                       and capitalization.
                     type: string
                   products:
+                    description: List of products used by the pattern
+                    items:
+                      type: string
+                    type: array
+                  type:
                     description: Type of pattern. For example, "Community" or "Validated".
                     type: string
                   url:

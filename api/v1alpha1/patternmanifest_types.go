@@ -76,7 +76,7 @@ type PatternManifestSpecPattern struct {
 	Products []string `json:"products,omitempty"`
 
 	// Type of pattern. For example, "Community" or "Validated".
-	Type string `json:"products,omitempty"`
+	Type string `json:"type,omitempty"`
 
 	// URL to the Git repo for the pattern
 	URL string `json:"url,omitempty"`
