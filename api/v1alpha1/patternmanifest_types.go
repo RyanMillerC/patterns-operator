@@ -23,6 +23,18 @@ import (
 // EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
 // NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
 
+// !!!
+// IMPORTANT: Run "make" to regenerate code after modifying this file
+// !!!
+
+type PatternManifestSpecMaintainer struct {
+	// Name of the maintainer
+	Name string `json:"name,omitempty"`
+
+	// Email address of the maintainer
+	Email string `json:"email,omitempty"`
+}
+
 type PatternManifestSpecOrganization struct {
 	// Name of the organization that provides this pattern
 	Name string `json:"name,omitempty"`
@@ -30,57 +42,48 @@ type PatternManifestSpecOrganization struct {
 	// Description of the organization that provides this pattern
 	Description string `json:"description,omitempty"`
 
-	// Email address of the maintainers of the organization that provides this
-	// pattern. NOTE: this can be a different than the maintainers of the pattern
-	// itself.
-	Maintainers string `json:"maintainers,omitempty"`
+	// List of organization maintainers.  NOTE: This can be a different than the
+	// maintainers of the pattern itself.
+	Maintainers []PatternManifestSpecMaintainer `json:"maintainers,omitempty"`
 
 	// URL of the organization that provides this pattern
 	URL string `json:"url,omitempty"`
 }
 
 type PatternManifestSpecPattern struct {
-	// Badge text to display in the catalog view
-	Badge string `json:"badge,omitempty"`
-
-	// Git Branch to use for the pattern
-	Branch string `json:"branch,omitempty"`
+	// Display name of the pattern. This should have spaces and capitalization.
+	Name string `json:"name,omitempty"`
 
 	// Short description of the pattern. Will be used in the catalog on the card
 	// for this pattern. If it's too long, the catalog will truncate the text.
-	ShortDescription string `json:"shortDescription,omitempty"`
+	Description string `json:"description,omitempty"`
 
 	// Longer description of the pattern. Will be used in the catalog when a
 	// user clicks on the card to see detauls for this pattern.
 	LongDescription string `json:"longDescription,omitempty"`
 
-	// Email address of the maintainers of the pattern
-	Maintainers string `json:"maintainers,omitempty"`
+	// Git Branch to use for the pattern
+	Branch string `json:"branch,omitempty"`
 
-	// Display name of the pattern. This should have spaces and capitalization.
-	Name string `json:"name,omitempty"`
+	// URL to the Git repo for the pattern. This should start with "http://" or
+	// "https://" and end with ".git".
+	GitRepo string `json:"gitRepo,omitempty"`
 
-	// Products used by the pattern
-	Products []PatternManifestProduct `json:"products,omitempty"`
+	// List of pattern maintainers
+	Maintainers []PatternManifestSpecMaintainer `json:"maintainers,omitempty"`
+
+	// List of products used by the pattern
+	Products []string `json:"products,omitempty"`
+
+	// Type of pattern. For example, "Community" or "Validated".
+	Type string `json:"products,omitempty"`
 
 	// URL to the Git repo for the pattern
 	URL string `json:"url,omitempty"`
 }
 
-type PatternManifestProduct struct {
-	// Name of the product
-	Name string `json:"name,omitempty"`
-
-	// Version of the product. Try to stick to major/minor release versions
-	// instead of specific patch versions.
-	Version string `json:"version,omitempty"`
-}
-
 // PatternManifestSpec defines the desired state of PatternManifest
 type PatternManifestSpec struct {
-	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
-	// Important: Run "make" to regenerate code after modifying this file
-
 	// Information about the organization that provides this pattern
 	Organization PatternManifestSpecOrganization `json:"organization,omitempty"`
 
@@ -90,8 +93,8 @@ type PatternManifestSpec struct {
 
 // PatternManifestStatus defines the observed state of PatternManifest
 type PatternManifestStatus struct {
-	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
-	// Important: Run "make" to regenerate code after modifying this file
+	// LastUpdateTime is the last time the YAML catalog file was synced
+	LastUpdateTime metav1.Time `json:"lastUpdateTime,omitempty"`
 }
 
 //+kubebuilder:object:root=true
