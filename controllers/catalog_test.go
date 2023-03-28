@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func TestGetCatalogYAML(t *testing.T) {
+func TestGetPatternCatalogYAML(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 		// The whitespace is important on the following lines. This YAML block
@@ -44,7 +44,12 @@ patterns:
 	}))
 	defer server.Close()
 
-	catalog, _ := getCatalogYAML(server.URL)
+	catalog, err := getPatternCatalogYAML(server.URL)
+	if err != nil {
+		t.Error(err)
+		t.FailNow() // Prevent potential crash since there was an error
+	}
+
 	// Check some random data. Probably not worth it to check everything
 	if catalog.Version != "alpha" {
 		t.Errorf("Expected catalog.Version to be 'alpha', got %s", catalog.Version)
@@ -57,6 +62,8 @@ patterns:
 	}
 }
 
+/*
 func TestGetPatternManifestsOwnedByUs(t *testing.T) {
 	// TODO: Find a good way to test this
 }
+*/
