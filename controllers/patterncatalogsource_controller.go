@@ -19,6 +19,7 @@ package controllers
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	kerrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -90,7 +91,7 @@ func (r *PatternCatalogSourceReconciler) Reconcile(ctx context.Context, req ctrl
 		return ctrl.Result{}, err
 	}
 
-	r.logger.Info("-", "catalog", catalog)
+	// r.logger.Info("-", "catalog", catalog)
 
 	//for _, pattern := range catalog.Patterns {
 	patternManfiestsOwnedByUs := &api.PatternManifestList{}
@@ -100,10 +101,40 @@ func (r *PatternCatalogSourceReconciler) Reconcile(ctx context.Context, req ctrl
 	}
 
 	if len(patternManfiestsOwnedByUs.Items) > 0 {
-		r.logger.Info("-", "patternManifestsOwnedByUs", patternManfiestsOwnedByUs)
+		r.logger.Info("Found pattern manifests")
 	} else {
 		r.logger.Info("No PatternManifests owned by us")
 	}
+
+	// Delete PatternManifests owned by us that no longer exist in the catalog
+	for _, patternManifest := range patternManfiestsOwnedByUs.Items {
+		shouldDelete := true
+		for _, pattern := range catalog.Patterns {
+			patternName := strings.ReplaceAll(pattern.Name, " ", "-")
+			patternName = strings.ToLower(patternName)
+			if patternManifest.Name == patternName {
+				shouldDelete = false
+				break
+			}
+		}
+		if shouldDelete {
+			r.logger.Info("Pruning PatternManifest removed from catalog", "PatternManifest", patternManifest.Name)
+			r.Delete(context.TODO(), &patternManifest, &client.DeleteOptions{})
+		}
+	}
+
+	/*
+		for _, pattern := range catalog.Patterns {
+			var match api.PatternManifest
+			for _, patternManifest := range patternManfiestsOwnedByUs.Items {
+				if pattern.Name == patternManifest.Name {
+					match = patternManifest
+					break
+				}
+			}
+
+		}
+	*/
 
 	// Check if PatternManifest exists
 	// If it doesn't, create it

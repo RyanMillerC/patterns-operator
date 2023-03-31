@@ -54,7 +54,7 @@ type PatternManifestReconciler struct {
 func (r *PatternManifestReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
 	r.logger = klog.FromContext(ctx)
 
-	r.logger.Info("Reconciling PatternCatalogSource")
+	r.logger.Info("Reconciling PatternManifest")
 
 	// Logger includes name and namespace
 	// Its also wants arguments in pairs, eg.
@@ -69,7 +69,7 @@ func (r *PatternManifestReconciler) Reconcile(ctx context.Context, req ctrl.Requ
 			// Request object not found, could have been deleted after reconcile request.
 			// Owned objects are automatically garbage collected. For additional cleanup logic use finalizers.
 			// Return and don't requeue
-			r.logger.Info("Pattern not found")
+			r.logger.Info("PatternManifest not found")
 			return reconcile.Result{}, nil
 		}
 		// Error reading the object - requeue the request.
