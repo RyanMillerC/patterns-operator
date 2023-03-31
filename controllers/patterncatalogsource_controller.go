@@ -70,7 +70,7 @@ func (r *PatternCatalogSourceReconciler) Reconcile(ctx context.Context, req ctrl
 			// Request object not found, could have been deleted after reconcile request.
 			// Owned objects are automatically garbage collected. For additional cleanup logic use finalizers.
 			// Return and don't requeue
-			r.logger.Info("Pattern not found")
+			r.logger.Info("PatternCatalogSource not found")
 			return reconcile.Result{}, nil
 		}
 		// Error reading the object - requeue the request.
