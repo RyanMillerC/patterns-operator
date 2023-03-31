@@ -83,14 +83,14 @@ func (r *PatternCatalogSourceReconciler) Reconcile(ctx context.Context, req ctrl
 		err = fmt.Errorf("unable to pull YAML catalog because spec.source is not set on %s", instance.Name)
 		return ctrl.Result{}, err
 	}
-	r.logger.Info("Pulling YAML catalog from", url)
-	catalog, err := getCatalogYAML(url)
+	r.logger.Info("Pulling YAML catalog from", "url", url)
+	catalog, err := getPatternCatalogYAML(url)
 	if err != nil {
 		r.logger.Error(err, "Error pulling YAML catalog from source")
 		return ctrl.Result{}, err
 	}
 
-	r.logger.Info("catalog", catalog)
+	r.logger.Info("-", "catalog", catalog)
 
 	//for _, pattern := range catalog.Patterns {
 	patternManfiestsOwnedByUs := &api.PatternManifestList{}
@@ -100,7 +100,7 @@ func (r *PatternCatalogSourceReconciler) Reconcile(ctx context.Context, req ctrl
 	}
 
 	if len(patternManfiestsOwnedByUs.Items) > 0 {
-		r.logger.Info("patternManifestsOwnedByUs", patternManfiestsOwnedByUs)
+		r.logger.Info("-", "patternManifestsOwnedByUs", patternManfiestsOwnedByUs)
 	} else {
 		r.logger.Info("No PatternManifests owned by us")
 	}

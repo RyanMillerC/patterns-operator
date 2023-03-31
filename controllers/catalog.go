@@ -33,25 +33,32 @@ type PatternCatalog struct {
 	Version      string `yaml:"version"`
 	Organization struct {
 		Name        string `yaml:"name"`
-		OrgURL      string `yaml:"org-url"`
 		Description string `yaml:"description"`
-		Maintainers string `yaml:"maintainers"`
+		Maintainers []struct {
+			Name  string `yaml:"name"`
+			Email string `yaml:"email"`
+		} `yaml:"maintainers"`
+		URL string `yaml:"url"`
 	} `yaml:"organization"`
 	Patterns []struct {
-		Name        string `yaml:"name"`
-		Description string `yaml:"description"`
-		PatternURL  string `yaml:"pattern-url"`
-		Products    []struct {
-			Name string `yaml:"name"`
-		} `yaml:"products"`
-		Branch      string `yaml:"branch"`
-		Maintainers string `yaml:"maintainers"`
+		Name            string `yaml:"name"`
+		Description     string `yaml:"description"`
+		LongDescription string `yaml:"longDescription"`
+		Branch          string `yaml:"branch"`
+		GitRepo         string `yaml:"gitRepo"`
+		Maintainers     []struct {
+			Name  string `yaml:"name"`
+			Email string `yaml:"email"`
+		} `yaml:"maintainers"`
+		Products []string `yaml:"products"`
+		Type     string   `yaml:"type"`
+		URL      string   `yaml:"url"`
 	} `yaml:"patterns"`
 }
 
 // Given a URL to a catalog.yaml file, fetch that file, and return a object of
-// type CatalogYAML.
-func getCatalogYAML(url string) (*PatternCatalog, error) {
+// type PatternCatalog.
+func getPatternCatalogYAML(url string) (*PatternCatalog, error) {
 	res, err := http.Get(url)
 	if err != nil {
 		return nil, err
@@ -83,8 +90,8 @@ func getPatternManifestsOwnedByUs(r *PatternCatalogSourceReconciler, pcs *api.Pa
 		"gitops.hybrid-cloud-patterns.io/source": pcs.Name,
 	}
 	labelSelector := labels.SelectorFromSet(lbs)
-	listOps := &client.ListOptions{Namespace: pcs.Namespace, LabelSelector: labelSelector}
-	if err := r.List(context.TODO(), pms, listOps); err != nil {
+	listOpts := &client.ListOptions{Namespace: pcs.Namespace, LabelSelector: labelSelector}
+	if err := r.List(context.TODO(), pms, listOpts); err != nil {
 		return err
 	}
 	return nil
