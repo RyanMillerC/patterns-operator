@@ -14,6 +14,17 @@ spec:
   apiservicedefinitions: {}
   customresourcedefinitions:
     owned:
+    - description: PatternCatalogSource points to a remote Catalog YAML manifest that
+        contains metadata about available patterns
+      displayName: Pattern Catalog Source
+      kind: PatternCatalogSource
+      name: patterncatalogsources.gitops.hybrid-cloud-patterns.io
+      version: v1alpha1
+    - description: PatternManifest is the Schema for the patternmanifests API
+      displayName: Pattern Manifest
+      kind: PatternManifest
+      name: patternmanifests.gitops.hybrid-cloud-patterns.io
+      version: v1alpha1
     - description: Pattern is the Schema for the patterns API
       displayName: Pattern
       kind: Pattern

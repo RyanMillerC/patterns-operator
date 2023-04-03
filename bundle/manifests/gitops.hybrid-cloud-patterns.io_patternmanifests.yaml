@@ -1,0 +1,133 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.7.0
+  creationTimestamp: null
+  name: patternmanifests.gitops.hybrid-cloud-patterns.io
+spec:
+  group: gitops.hybrid-cloud-patterns.io
+  names:
+    kind: PatternManifest
+    listKind: PatternManifestList
+    plural: patternmanifests
+    singular: patternmanifest
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: PatternManifest is the Schema for the patternmanifests API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: PatternManifestSpec defines the desired state of PatternManifest
+            properties:
+              organization:
+                description: Information about the organization that provides this
+                  pattern
+                properties:
+                  description:
+                    description: Description of the organization that provides this
+                      pattern
+                    type: string
+                  maintainers:
+                    description: 'List of organization maintainers.  NOTE: This can
+                      be a different than the maintainers of the pattern itself.'
+                    items:
+                      properties:
+                        email:
+                          description: Email address of the maintainer
+                          type: string
+                        name:
+                          description: Name of the maintainer
+                          type: string
+                      type: object
+                    type: array
+                  name:
+                    description: Name of the organization that provides this pattern
+                    type: string
+                  url:
+                    description: URL of the organization that provides this pattern
+                    type: string
+                type: object
+              pattern:
+                description: Information about the pattern
+                properties:
+                  branch:
+                    description: Git Branch to use for the pattern
+                    type: string
+                  description:
+                    description: Short description of the pattern. Will be used in
+                      the catalog on the card for this pattern. If it's too long,
+                      the catalog will truncate the text.
+                    type: string
+                  gitRepo:
+                    description: URL to the Git repo for the pattern. This should
+                      start with "http://" or "https://" and end with ".git".
+                    type: string
+                  longDescription:
+                    description: Longer description of the pattern. Will be used in
+                      the catalog when a user clicks on the card to see detauls for
+                      this pattern.
+                    type: string
+                  maintainers:
+                    description: List of pattern maintainers
+                    items:
+                      properties:
+                        email:
+                          description: Email address of the maintainer
+                          type: string
+                        name:
+                          description: Name of the maintainer
+                          type: string
+                      type: object
+                    type: array
+                  name:
+                    description: Display name of the pattern. This should have spaces
+                      and capitalization.
+                    type: string
+                  products:
+                    description: List of products used by the pattern
+                    items:
+                      type: string
+                    type: array
+                  type:
+                    description: Type of pattern. For example, "Community" or "Validated".
+                    type: string
+                  url:
+                    description: URL to the Git repo for the pattern
+                    type: string
+                type: object
+            type: object
+          status:
+            description: PatternManifestStatus defines the observed state of PatternManifest
+            properties:
+              lastUpdateTime:
+                description: LastUpdateTime is the last time the YAML catalog file
+                  was synced
+                format: date-time
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []

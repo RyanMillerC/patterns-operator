@@ -1,0 +1,6 @@
+apiVersion: gitops.hybrid-cloud-patterns.io/v1alpha1
+kind: PatternCatalogSource
+metadata:
+  name: default
+spec:
+  source: 'https://raw.githubusercontent.com/hybrid-cloud-patterns/patterns-catalog/main/default-patterncatalogsource.yaml'
