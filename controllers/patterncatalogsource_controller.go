@@ -26,6 +26,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
 	klog "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 
@@ -169,6 +170,12 @@ func (r *PatternCatalogSourceReconciler) Reconcile(ctx context.Context, req ctrl
 				Type:        pattern.Type,
 				URL:         pattern.URL,
 			},
+		}
+		// Set owner reference for PatternManifest object so it's cleaned up if
+		// the PatternCatalogSource owner object is deleted.
+		err := controllerutil.SetControllerReference(instance, &patternManifest, r.Scheme)
+		if err != nil {
+			return ctrl.Result{}, err
 		}
 		// TODO: There might be an UpdateOption for create if doesn't exist (or something like that)
 		if newObj {
