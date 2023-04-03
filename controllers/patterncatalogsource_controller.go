@@ -22,6 +22,7 @@ import (
 	"strings"
 
 	kerrors "k8s.io/apimachinery/pkg/api/errors"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -110,6 +111,7 @@ func (r *PatternCatalogSourceReconciler) Reconcile(ctx context.Context, req ctrl
 	for _, patternManifest := range patternManfiestsOwnedByUs.Items {
 		shouldDelete := true
 		for _, pattern := range catalog.Patterns {
+			// TODO: This should be a function
 			patternName := strings.ReplaceAll(pattern.Name, " ", "-")
 			patternName = strings.ToLower(patternName)
 			if patternManifest.Name == patternName {
@@ -123,18 +125,58 @@ func (r *PatternCatalogSourceReconciler) Reconcile(ctx context.Context, req ctrl
 		}
 	}
 
-	/*
-		for _, pattern := range catalog.Patterns {
-			var match api.PatternManifest
-			for _, patternManifest := range patternManfiestsOwnedByUs.Items {
-				if pattern.Name == patternManifest.Name {
-					match = patternManifest
-					break
-				}
+	// Create or update PatternManifests for each pattern provided in the catalog
+	for _, pattern := range catalog.Patterns {
+		// TODO: This should be a function
+		patternName := strings.ReplaceAll(pattern.Name, " ", "-")
+		patternName = strings.ToLower(patternName)
+		var patternManifest api.PatternManifest
+		for _, pm := range patternManfiestsOwnedByUs.Items {
+			if pm.Name == patternName {
+				patternManifest = pm
+				break
 			}
-
 		}
-	*/
+		newObj := false // Use to determine if object should be created or updated
+		if patternManifest.Name == "" {
+			// No existing PatternManifest was found since the name is empty
+			newObj = true
+			patternManifest.ObjectMeta = metav1.ObjectMeta{
+				Name:      patternName,
+				Namespace: instance.Namespace,
+				Labels: map[string]string{
+					"gitops.hybrid-cloud-patterns.io/source": instance.Name,
+				},
+			}
+		}
+		patternManifest.Spec = api.PatternManifestSpec{
+			Organization: api.PatternManifestSpecOrganization{
+				Name:        catalog.Organization.Name,
+				Description: catalog.Organization.Description,
+				// TODO: Figure out how to get Maintainers working
+				Maintainers: []api.PatternManifestSpecMaintainer{},
+				URL:         catalog.Organization.URL,
+			},
+			Pattern: api.PatternManifestSpecPattern{
+				Name:            pattern.Name,
+				Description:     pattern.Description,
+				LongDescription: pattern.LongDescription,
+				Branch:          pattern.Branch,
+				GitRepo:         pattern.GitRepo,
+				// TODO: Figure out how to get Maintainers working
+				Maintainers: []api.PatternManifestSpecMaintainer{},
+				Products:    pattern.Products,
+				Type:        pattern.Type,
+				URL:         pattern.URL,
+			},
+		}
+		// TODO: There might be an UpdateOption for create if doesn't exist (or something like that)
+		if newObj {
+			r.Create(context.TODO(), &patternManifest, &client.CreateOptions{})
+		} else {
+			r.Update(context.TODO(), &patternManifest, &client.UpdateOptions{})
+		}
+	}
 
 	// Check if PatternManifest exists
 	// If it doesn't, create it
