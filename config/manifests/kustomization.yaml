@@ -2,6 +2,7 @@
 # used to generate the 'manifests/' directory in a bundle.
 resources:
 - bases/patterns-operator.clusterserviceversion.yaml
+- bases/patterns-operator.patterncatalogsource.yaml
 - ../default
 - ../samples
 - ../scorecard
