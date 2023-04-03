@@ -81,12 +81,20 @@ VERSION=$BRANCH make deploy
 
 ### Test your changes (alt)
 
-Replace $USER and the version of the operator:
+Create a `.env` file with your Quay username and version:
+
+```bash
+export USER=replace-me
+export VERSION=0.0.12
+
+export IMAGE_TAG_BASE=quay.io/$USER/patterns-operator
+export IMG=quay.io/$USER/patterns-operator:$VERSION
+```
+
+Then, source that file before running make:
 
 ```
-vi somefile.go
-export IMAGE_TAG_BASE=quay.io/$USER/patterns-operator
-export IMG=quay.io/$USER/patterns-operator:0.0.2
+source .env
 make docker-build docker-push bundle
 make deploy
 ```

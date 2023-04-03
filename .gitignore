@@ -25,5 +25,8 @@ testbin/*
 *~
 manager
 
+# Environment file for testing
+.env
+
 # Ignore console from other branch
 /console
