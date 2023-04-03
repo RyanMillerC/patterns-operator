@@ -6,3 +6,4 @@ metadata:
   namespace: default
 spec:
   source: 'https://raw.githubusercontent.com/RyanMillerC/pattern-catalog/main/catalog.yaml'
+  updateInterval: 30s

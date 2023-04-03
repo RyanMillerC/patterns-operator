@@ -20,6 +20,7 @@ import (
 	"context"
 	"fmt"
 	"strings"
+	"time"
 
 	kerrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -81,6 +82,13 @@ func (r *PatternCatalogSourceReconciler) Reconcile(ctx context.Context, req ctrl
 		return reconcile.Result{}, err
 	}
 
+	// TODO: Should validate object here
+
+	// Set UpdateInternal to default if it's not set
+	if instance.Spec.UpdateInterval == "" {
+		instance.Spec.UpdateInterval = "10m"
+	}
+
 	url := instance.Spec.Source
 	if url == "" {
 		err = fmt.Errorf("unable to pull YAML catalog because spec.source is not set on %s", instance.Name)
@@ -93,9 +101,10 @@ func (r *PatternCatalogSourceReconciler) Reconcile(ctx context.Context, req ctrl
 		return ctrl.Result{}, err
 	}
 
-	// r.logger.Info("-", "catalog", catalog)
+	// This will be used to set LastUpdated status on PatternCatalogSource and
+	// PatternManifest objects.
+	now := time.Now()
 
-	//for _, pattern := range catalog.Patterns {
 	patternManfiestsOwnedByUs := &api.PatternManifestList{}
 	err = getPatternManifestsOwnedByUs(r, instance, patternManfiestsOwnedByUs)
 	if err != nil {
@@ -177,29 +186,29 @@ func (r *PatternCatalogSourceReconciler) Reconcile(ctx context.Context, req ctrl
 		if err != nil {
 			return ctrl.Result{}, err
 		}
+
 		// TODO: There might be an UpdateOption for create if doesn't exist (or something like that)
 		if newObj {
 			r.Create(context.TODO(), &patternManifest, &client.CreateOptions{})
 		} else {
 			r.Update(context.TODO(), &patternManifest, &client.UpdateOptions{})
 		}
+
+		// Set status
+		patternManifest.Status.LastUpdateTime = metav1.NewTime(now)
+		r.Status().Update(context.TODO(), &patternManifest)
 	}
 
-	// Check if PatternManifest exists
-	// If it doesn't, create it
-	// Check if PatternManifest needs updates
-	// If it does, update it
+	// Set status
+	instance.Status.LastUpdateTime = metav1.NewTime(now)
+	r.Status().Update(context.TODO(), instance)
 
-	// For PatternManifest that is owned by us
-	// If Don't exist in the Catalog YAML
-	// - Determine this by looking at the name of the pattern
-
-	//needsUpdated := checkIfPatternManfestNeedsUpdated
-	// }
-
-	// &client.ListOptions{}
-
-	return ctrl.Result{}, nil
+	// Requeue on on the PatternCatalogSource's UpdateInterval
+	updateInterval, err := time.ParseDuration(instance.Spec.UpdateInterval)
+	if err != nil {
+		return ctrl.Result{}, err
+	}
+	return ctrl.Result{RequeueAfter: updateInterval}, nil
 }
 
 // SetupWithManager sets up the controller with the Manager.
