@@ -30,6 +30,9 @@ type PatternCatalogSourceSpec struct {
 
 	// Source is a URL to a YAML catalog file. This should start with http/https
 	Source string `json:"source,omitempty"`
+
+	// Pull catalog updates from the source on this interval. Default is "10m"
+	UpdateInterval string `json:"updateInterval,omitempty"`
 }
 
 // PatternCatalogSourceStatus defines the observed state of PatternCatalogSource
@@ -44,7 +47,7 @@ type PatternCatalogSourceStatus struct {
 //+kubebuilder:object:root=true
 //+kubebuilder:subresource:status
 
-// PatternCatalogSource is the Schema for the patterncatalogsources API
+// PatternCatalogSource points to a remote Catalog YAML manifest that contains metadata about available patterns
 type PatternCatalogSource struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`

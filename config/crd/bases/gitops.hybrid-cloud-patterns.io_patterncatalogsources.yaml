@@ -19,8 +19,8 @@ spec:
   - name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: PatternCatalogSource is the Schema for the patterncatalogsources
-          API
+        description: PatternCatalogSource points to a remote Catalog YAML manifest
+          that contains metadata about available patterns
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -40,6 +40,10 @@ spec:
               source:
                 description: Source is a URL to a YAML catalog file. This should start
                   with http/https
+                type: string
+              updateInterval:
+                description: Pull catalog updates from the source on this interval.
+                  Default is "10m"
                 type: string
             type: object
           status:
