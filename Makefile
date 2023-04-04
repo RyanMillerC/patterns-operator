@@ -180,9 +180,13 @@ bundle: manifests kustomize ## Generate bundle manifests and metadata, then vali
 	$(MAKE) bundle-fixes bundle-date
 	operator-sdk bundle validate ./bundle
 
+# TODO: Move these somewhere?
+CONTAINER_PLATFORM ?= amd64
+CONTAINER_OS ?= linux
+
 .PHONY: bundle-build
 bundle-build: ## Build the bundle image.
-	docker build -f bundle.Dockerfile -t $(BUNDLE_IMG) .
+	docker build --platform $(CONTAINER_OS)/$(CONTAINER_PLATFORM) -f bundle.Dockerfile -t $(BUNDLE_IMG) .
 
 .PHONY: bundle-push
 bundle-push: ## Push the bundle image.
