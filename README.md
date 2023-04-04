@@ -86,6 +86,7 @@ Create a `.env` file with your Quay username and version:
 ```bash
 export USER=replace-me
 export VERSION=0.0.12
+export CHANNELS=fast
 
 export IMAGE_TAG_BASE=quay.io/$USER/patterns-operator
 export IMG=quay.io/$USER/patterns-operator:$VERSION
@@ -107,7 +108,14 @@ Restart the container to pick up the latest image from quay
 
 ### Upgrade testing with OLM
 
-Assuming the previous version was `0.0.1`, and we're not deploying to the official Quay repository, start by defining the version, creating the 3 images, and pushing them to quay:
+Commit all of your working changes before running these commands. The make
+targets will modify the *bundle* and *config* directories with references to
+your username and version. It's easiest to commit your changes, run through the
+test, then clean up your local directory with `git reset --hard && git clean -df`.
+
+Assuming the previous version was `0.0.1`, and we're not deploying to the
+official Quay repository, start by defining the version, creating the 3 images,
+and pushing them to quay:
 
 ```
 export VERSION=0.0.2
@@ -119,7 +127,6 @@ Now create the CatalogSource so the cluster can see the new version
 ```
 make catalog-install
 ```
-
 
 ### Releases
 
