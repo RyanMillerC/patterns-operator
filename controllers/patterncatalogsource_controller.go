@@ -188,8 +188,10 @@ func (r *PatternCatalogSourceReconciler) Reconcile(ctx context.Context, req ctrl
 
 		// TODO: There might be an UpdateOption for create if doesn't exist (or something like that)
 		if newObj {
+			r.logger.Info("Creating PatternManifest from catalog", "PatternManifest", patternManifest.Name)
 			r.Create(context.TODO(), &patternManifest, &client.CreateOptions{})
 		} else {
+			r.logger.Info("Updating PatternManifest from catalog", "PatternManifest", patternManifest.Name)
 			r.Update(context.TODO(), &patternManifest, &client.UpdateOptions{})
 		}
 
