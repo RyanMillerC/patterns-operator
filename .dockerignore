@@ -1,4 +1,10 @@
-# More info: https://docs.docker.com/engine/reference/builder/#dockerignore-file
-# Ignore build and test binaries.
-bin/
-testbin/
+# This dramatically speeds up the container build process by not copying large
+# files into the container context that won't be used. More info:
+# https://docs.docker.com/engine/reference/builder/#dockerignore-file
+
+# Ignore everything
+*
+
+# Allow files and directories. ! means do the opposite. Since /bundle is
+# already ignored by *, this will unignore it
+!/bundle
