@@ -19,8 +19,10 @@ package controllers
 import (
 	"fmt"
 	"log"
+	"os"
 	"strings"
 
+	"github.com/go-errors/errors"
 	api "github.com/hybrid-cloud-patterns/patterns-operator/api/v1alpha1"
 	v1 "k8s.io/api/core/v1"
 )
@@ -84,6 +86,32 @@ func ParametersToMap(parameters []api.PatternParameter) map[string]interface{} {
 	}
 
 	return output
+}
+
+// Return the namespace of the running controller
+//
+// There's not an easy way to do this so here's a link to the pattern being
+// used: https://github.com/kubernetes/kubernetes/pull/63707
+//
+// This will error when running the controller outside of Kubernetes. To prevent
+// errors when running outside of Kubernetes, set the CONTROLLER_NAMESPACE
+// environment variable to whatever namespace you would deploy the controller
+// into if deploying on a cluster.
+func GetControllerNamespace() (string, error) {
+	// This way assumes you've set the POD_NAMESPACE environment variable using the downward API.
+	// This check has to be done first for backwards compatibility with the way InClusterConfig was originally set up
+	if ns, ok := os.LookupEnv("CONTROLLER_NAMESPACE"); ok {
+		return ns, nil
+	}
+
+	// Fall back to the namespace associated with the service account token, if available
+	if data, err := os.ReadFile("/var/run/secrets/kubernetes.io/serviceaccount/namespace"); err == nil {
+		if ns := strings.TrimSpace(string(data)); len(ns) > 0 {
+			return ns, nil
+		}
+	}
+
+	return "", errors.New("could not determine controller namespace. Set CONTROLLER_NAMESPACE environment variable if running controller outside of cluster")
 }
 
 // getPatternConditionByStatus returns a copy of the pattern condition defined by the status and the index in the slice if it exists, otherwise -1 and nil

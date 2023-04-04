@@ -22,7 +22,10 @@ import (
 	"net/http"
 
 	"gopkg.in/yaml.v3"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/labels"
+	"k8s.io/apimachinery/pkg/runtime"
+	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	api "github.com/hybrid-cloud-patterns/patterns-operator/api/v1alpha1"
@@ -94,5 +97,39 @@ func getPatternManifestsOwnedByUs(r *PatternCatalogSourceReconciler, pcs *api.Pa
 	if err := r.List(context.TODO(), pms, listOpts); err != nil {
 		return err
 	}
+	return nil
+}
+
+func CreateDefaultPatternCatalogSource() error {
+	// Create k8s client with PatternCatalogSource scheme
+	scheme := runtime.NewScheme()
+	api.AddToScheme(scheme)
+	config := ctrl.GetConfigOrDie()
+	kclient, err := client.New(config, client.Options{Scheme: scheme})
+	if err != nil {
+		return err
+	}
+
+	// Namespace won't be dynamically assigned if omitted from object
+	namespace, err := GetControllerNamespace()
+	if err != nil {
+		return err
+	}
+
+	// Create the default PatternCatalogSource object
+	pcs := &api.PatternCatalogSource{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      "default",
+			Namespace: namespace,
+		},
+		Spec: api.PatternCatalogSourceSpec{
+			Source: "https://raw.githubusercontent.com/hybrid-cloud-patterns/patterns-catalog/main/catalog.yaml",
+		},
+	}
+	err = kclient.Create(context.TODO(), pcs, &client.CreateOptions{})
+	if err != nil {
+		return err
+	}
+
 	return nil
 }

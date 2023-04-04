@@ -87,6 +87,8 @@ func (r *PatternCatalogSourceReconciler) Reconcile(ctx context.Context, req ctrl
 	// Set UpdateInternal to default if it's not set
 	if instance.Spec.UpdateInterval == "" {
 		instance.Spec.UpdateInterval = "10m"
+		r.Update(context.TODO(), instance, &client.UpdateOptions{})
+		return reconcile.Result{Requeue: true}, nil
 	}
 
 	url := instance.Spec.Source
@@ -94,30 +96,24 @@ func (r *PatternCatalogSourceReconciler) Reconcile(ctx context.Context, req ctrl
 		err = fmt.Errorf("unable to pull YAML catalog because spec.source is not set on %s", instance.Name)
 		return ctrl.Result{}, err
 	}
-	r.logger.Info("Pulling YAML catalog from", "url", url)
+	r.logger.Info("Attempting to pull YAML catalog", "url", url)
 	catalog, err := getPatternCatalogYAML(url)
 	if err != nil {
-		r.logger.Error(err, "Error pulling YAML catalog from source")
+		r.logger.Error(err, "error pulling YAML catalog from source")
 		return ctrl.Result{}, err
 	}
+	r.logger.Info("Successfully pulled YAML catalog", "url", url, "num of patterns", len(catalog.Patterns))
 
 	// This will be used to set LastUpdated status on PatternCatalogSource and
 	// PatternManifest objects.
 	now := time.Now()
 
+	// Delete PatternManifests owned by us that no longer exist in the catalog
 	patternManfiestsOwnedByUs := &api.PatternManifestList{}
 	err = getPatternManifestsOwnedByUs(r, instance, patternManfiestsOwnedByUs)
 	if err != nil {
 		return ctrl.Result{}, err
 	}
-
-	if len(patternManfiestsOwnedByUs.Items) > 0 {
-		r.logger.Info("Found pattern manifests")
-	} else {
-		r.logger.Info("No PatternManifests owned by us")
-	}
-
-	// Delete PatternManifests owned by us that no longer exist in the catalog
 	for _, patternManifest := range patternManfiestsOwnedByUs.Items {
 		shouldDelete := true
 		for _, pattern := range catalog.Patterns {
