@@ -1,0 +1,18 @@
+# This catalog is used for testing OLM deployment outside of the OperatorHub
+# community catalog. You should only use this catalog for validating OLM
+# bundles and for testing OLM upgrades against an OpenShift cluster.
+schema: olm.package
+name: patterns-operator
+defaultChannel: fast
+---
+schema: olm.channel
+package: patterns-operator
+name: fast
+entries:
+- name: patterns-operator.v0.0.12
+# Example if you want to deploy a new version
+# - name: patterns-operator.v0.0.12
+#   replaces: patterns-operator.v0.0.13
+---
+schema: olm.bundle
+image: quay.io/rymiller/patterns-operator-bundle:v0.0.12
