@@ -35,6 +35,7 @@ import (
 
 	gitopsv1alpha1 "github.com/hybrid-cloud-patterns/patterns-operator/api/v1alpha1"
 	"github.com/hybrid-cloud-patterns/patterns-operator/controllers"
+	"github.com/hybrid-cloud-patterns/patterns-operator/pkg/console"
 	"github.com/hybrid-cloud-patterns/patterns-operator/version"
 	//+kubebuilder:scaffold:imports
 )
@@ -115,6 +116,14 @@ func main() {
 	err = controllers.CreateDefaultPatternCatalogSource()
 	if err != nil {
 		setupLog.Error(err, "unable to create default PatternCatalogSource")
+	}
+
+	// Create resources (Deployment, Service, and ConsolePlugin) required to run
+	// the OpenShift console dynamic plugin. This has to be done before starting
+	// the manager, which kicks off the reconsile infinite loop.
+	err = console.DeployConsolePlugin()
+	if err != nil {
+		setupLog.Error(err, "unable to deploy console plugin")
 	}
 
 	setupLog.Info("starting manager")
