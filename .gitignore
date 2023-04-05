@@ -29,7 +29,7 @@ manager
 .env
 
 # Ignore console from other branch
-console
+/console
 
 # Rendered catalog. This file is generated with: make catalog-build
-catalog/catalog.yaml
+/catalog/catalog.yaml
