@@ -112,7 +112,6 @@ func main() {
 
 	// Create the default PatternCatalogSource. This has to be done before
 	// starting the manager, which kicks off the reconsile infinite loop.
-	setupLog.Info("creating default PatternCatalogSource (if it doesn't already exist)")
 	err = controllers.CreateDefaultPatternCatalogSource()
 	if err != nil {
 		setupLog.Error(err, "unable to create default PatternCatalogSource")

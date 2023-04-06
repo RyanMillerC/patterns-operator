@@ -22,6 +22,7 @@ import (
 	"net/http"
 
 	"gopkg.in/yaml.v3"
+	kerrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -29,7 +30,10 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	api "github.com/hybrid-cloud-patterns/patterns-operator/api/v1alpha1"
+	"github.com/imdario/mergo"
 )
+
+var catalogLog = ctrl.Log.WithName("catalog")
 
 // Generated using https://zhwt.github.io/yaml-to-go/
 type PatternCatalog struct {
@@ -116,7 +120,6 @@ func CreateDefaultPatternCatalogSource() error {
 		return err
 	}
 
-	// Create the default PatternCatalogSource object
 	pcs := &api.PatternCatalogSource{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      "default",
@@ -126,9 +129,36 @@ func CreateDefaultPatternCatalogSource() error {
 			Source: "https://raw.githubusercontent.com/hybrid-cloud-patterns/patterns-catalog/main/catalog.yaml",
 		},
 	}
-	err = kclient.Create(context.TODO(), pcs, &client.CreateOptions{})
+
+	// Check if the resource already exists
+	var found api.PatternCatalogSource
+	key := client.ObjectKeyFromObject(pcs)
+	err = kclient.Get(context.TODO(), key, &found)
+	create := false
 	if err != nil {
-		return err
+		if kerrors.IsNotFound(err) {
+			create = true
+		} else {
+			return err
+		}
+	}
+
+	if create {
+		catalogLog.Info("Creating default PatternCatalogSource")
+		err := kclient.Create(context.TODO(), pcs, &client.CreateOptions{})
+		if err != nil {
+			return err
+		}
+	} else {
+		catalogLog.Info("Updating default PatternCatalogSource")
+		err := mergo.Merge(&found, pcs, mergo.WithOverride)
+		if err != nil {
+			return err
+		}
+		err = kclient.Update(context.TODO(), &found, &client.UpdateOptions{})
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil
