@@ -8,3 +8,4 @@
 # Allow files and directories. ! means do the opposite. Since /bundle is
 # already ignored by *, this will unignore it
 !/bundle
+!manager
