@@ -1,4 +1,3 @@
-
 # Binaries for programs and plugins
 *.exe
 *.exe~
@@ -24,6 +23,7 @@ testbin/*
 *.swo
 *~
 manager
+tmp
 
 # Environment file for testing
 .env
@@ -33,3 +33,4 @@ manager
 
 # Rendered catalog. This file is generated with: make catalog-build
 /catalog/catalog.yaml
+/catalog/_template.yaml
