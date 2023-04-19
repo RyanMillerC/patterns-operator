@@ -114,12 +114,12 @@ run: manifests generate fmt vet ## Run a controller from your host.
 
 # These should probably always be linux/amd64 unless the machine/cluster you
 # are running on is a different OS/Arch
-CONTAINER_PLATFORM ?= amd64
+CONTAINER_ARCH ?= amd64
 CONTAINER_OS ?= linux
 
 .PHONY: docker-build
 docker-build:  ## Build docker image with the manager.
-	docker build --platform $(CONTAINER_OS)/$(CONTAINER_PLATFORM) -t $(IMG) .
+	docker build --platform $(CONTAINER_OS)/$(CONTAINER_ARCH) -t $(IMG) .
 
 .PHONY: docker-push
 docker-push: ## Push docker image with the manager.
@@ -129,7 +129,7 @@ docker-push: ## Push docker image with the manager.
 console-build:
 	cd ./console; yarn install
 	cd ./console; yarn build
-	cd ./console; docker build --platform $(CONTAINER_OS)/$(CONTAINER_PLATFORM) -t $(IMAGE_TAG_BASE)-console-plugin:v$(VERSION) .
+	cd ./console; docker build --platform $(CONTAINER_OS)/$(CONTAINER_ARCH) -t $(IMAGE_TAG_BASE)-console-plugin:v$(VERSION) .
 
 .PHONY: console-push ## Push docker image for console plugin.
 console-push:
@@ -195,13 +195,9 @@ bundle: manifests kustomize ## Generate bundle manifests and metadata, then vali
 	$(MAKE) bundle-fixes bundle-date
 	operator-sdk bundle validate ./bundle
 
-# TODO: Move these somewhere?
-CONTAINER_PLATFORM ?= amd64
-CONTAINER_OS ?= linux
-
 .PHONY: bundle-build
 bundle-build: ## Build the bundle image.
-	docker build --platform $(CONTAINER_OS)/$(CONTAINER_PLATFORM) -f bundle.Dockerfile -t $(BUNDLE_IMG) .
+	docker build --platform $(CONTAINER_OS)/$(CONTAINER_ARCH) -f bundle.Dockerfile -t $(BUNDLE_IMG) .
 
 .PHONY: bundle-push
 bundle-push: ## Push the bundle image.
@@ -260,7 +256,7 @@ endif
 .PHONY: catalog-build
 catalog-build: opm ## Build a catalog image.
 	$(OPM) alpha render-template basic -o yaml < catalog/template.yaml > catalog/catalog.yaml
-	cd catalog ; docker build --platform $(CONTAINER_OS)/$(CONTAINER_PLATFORM) -t $(CATALOG_IMG) .
+	cd catalog ; docker build --platform $(CONTAINER_OS)/$(CONTAINER_ARCH) -t $(CATALOG_IMG) .
 
 # Push the catalog image.
 .PHONY: catalog-push
