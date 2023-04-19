@@ -89,7 +89,7 @@ export VERSION=0.0.12
 export CHANNELS=fast
 
 export IMAGE_TAG_BASE=quay.io/$USER/patterns-operator
-export IMG=quay.io/$USER/patterns-operator:$VERSION
+export IMG=${IMAGE_TAG_BASE}:${VERSION}
 ```
 
 Then, source that file before running make:
