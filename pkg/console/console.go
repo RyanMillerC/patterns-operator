@@ -99,7 +99,12 @@ func DeployConsolePlugin() error {
 	deployment := getDeployment(name, namespace)
 	// If set, override the container image tag
 	if config.OverrideConsolePluginImageTag != "" {
-		deployment.Spec.Template.Spec.Containers[0].Image = fmt.Sprintf("%s:%s", config.ConsolePluginImage, config.OverrideConsolePluginImageTag)
+		image := fmt.Sprintf(
+			"%s:%s",
+			config.ConsolePluginImage,
+			config.OverrideConsolePluginImageTag
+		)
+		deployment.Spec.Template.Spec.Containers[0].Image = image
 	}
 	createOrUpdateDeployment(kclient, &deployment)
 	if err != nil {
