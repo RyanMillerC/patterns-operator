@@ -102,7 +102,7 @@ func DeployConsolePlugin() error {
 		image := fmt.Sprintf(
 			"%s:%s",
 			config.ConsolePluginImage,
-			config.OverrideConsolePluginImageTag
+			config.OverrideConsolePluginImageTag,
 		)
 		deployment.Spec.Template.Spec.Containers[0].Image = image
 	}
