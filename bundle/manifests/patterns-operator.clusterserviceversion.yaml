@@ -61,6 +61,7 @@ metadata:
       ]
     capabilities: Basic Install
     categories: OpenShift Optional
+    console.openshift.io/plugins: '["patterns-operator-console-plugin"]'
     containerImage: quay.io/hybridcloudpatterns/patterns-operator:0.0.12
     description: An operator to deploy and manage architecture patterns from https://hybrid-cloud-patterns.io
     operators.operatorframework.io/builder: operator-sdk-v1.25.1
