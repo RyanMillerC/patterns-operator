@@ -128,6 +128,14 @@ Now create the CatalogSource so the cluster can see the new version
 make catalog-install
 ```
 
+### Common Pitfalls
+
+#### Console plugin doesn't load (Says 'Pending' on Overview page)
+
+If you are having issues with the console plugin not appearing, clear your
+website data (cache, cookies, etc.) and reload. I'm not sure why this happens.
+I think it's an OpenShift Console thing, not an us thing.
+
 ### Releases
 
 As a first step, make sure you have already cloned the community-operators-prod via `git clone git@github.com:$USER/community-operators-prod.git`
