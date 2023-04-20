@@ -192,6 +192,18 @@ spec:
           - get
           - list
         - apiGroups:
+          - apps
+          resources:
+          - deployments
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - patch
+          - update
+          - watch
+        - apiGroups:
           - argoproj.io
           resources:
           - applications
@@ -227,6 +239,18 @@ spec:
           - console.openshift.io
           resources:
           - consoleplugins
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - patch
+          - update
+          - watch
+        - apiGroups:
+          - ""
+          resources:
+          - services
           verbs:
           - create
           - delete
