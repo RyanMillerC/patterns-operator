@@ -31,8 +31,12 @@ import (
 
 var consoleLog = ctrl.Log.WithName("console")
 
-// +kubebuilder:rbac:namespace=cat-facts-operator,groups=apps,resources=deployments,verbs=get;list;watch;create;update;patch;delete
-// +kubebuilder:rbac:namespace=cat-facts-operator,groups=core,resources=services,verbs=get;list;watch;create;update;patch;delete
+// TODO: We don't actually need cluster-level permissions to deployments and
+// services. You have to know the namespace name in advance to use kubebuilder
+// markers. Problem for another day.
+
+// +kubebuilder:rbac:groups=apps,resources=deployments,verbs=get;list;watch;create;update;patch;delete
+// +kubebuilder:rbac:groups=core,resources=services,verbs=get;list;watch;create;update;patch;delete
 // +kubebuilder:rbac:groups=console.openshift.io,resources=consoleplugins,verbs=get;list;watch;create;update;patch;delete
 // +kubebuilder:rbac:groups=config.openshift.io,resources=clusterversions,verbs=get
 
@@ -106,19 +110,19 @@ func DeployConsolePlugin() error {
 		)
 		deployment.Spec.Template.Spec.Containers[0].Image = image
 	}
-	createOrUpdateDeployment(kclient, &deployment)
+	err = createOrUpdateDeployment(kclient, &deployment)
 	if err != nil {
 		return err
 	}
 
 	service := getService(name, namespace)
-	createOrUpdateService(kclient, &service)
+	err = createOrUpdateService(kclient, &service)
 	if err != nil {
 		return err
 	}
 
 	consolePlugin := getConsolePlugin(name, namespace)
-	createOrUpdateConsolePlugin(kclient, &consolePlugin)
+	err = createOrUpdateConsolePlugin(kclient, &consolePlugin)
 	if err != nil {
 		return err
 	}
@@ -291,6 +295,7 @@ func getDeployment(name string, namespace string) appsv1.Deployment {
 		},
 		Status: appsv1.DeploymentStatus{},
 	}
+
 	return deployment
 }
 
