@@ -267,6 +267,7 @@ catalog-push: ## Push a catalog image.
 catalog-install: config/samples/pattern-catalog-$(VERSION).yaml
 	-oc delete -f config/samples/pattern-catalog-$(VERSION).yaml
 	oc create -f config/samples/pattern-catalog-$(VERSION).yaml
+	@printf '\nWithin 60 seconds you should see "Test Patterns Operator" appear as a Source in OperatorHub\n\n'
 
 config/samples/pattern-catalog-$(VERSION).yaml:
 	cp  config/samples/pattern-catalog.yaml config/samples/pattern-catalog-$(VERSION).yaml
