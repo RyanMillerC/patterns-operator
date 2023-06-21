@@ -1,0 +1,29 @@
+[
+  {
+    "type": "console.page/route",
+    "properties": {
+      "exact": true,
+      "path": "/patterns-catalog",
+      "component": { "$codeRef": "PatternsCatalogPage" }
+    }
+  },
+  {
+    "type": "console.navigation/href",
+    "properties": {
+      "id": "patterns-catalog",
+      "name": "Patterns Catalog",
+      "href": "/patterns-catalog",
+      "perspective": "admin",
+      "section": "patterns-section"
+    }
+  },
+  {
+    "type": "console.navigation/section",
+    "properties": {
+      "id": "patterns-section",
+      "insertAfter": "home",
+      "perspective": "admin",
+      "name": "Patterns"
+    }
+  }
+]
