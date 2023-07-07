@@ -27,9 +27,6 @@ tmp
 # Environment file for testing
 .env
 
-# Ignore console from other branch
-/console
-
 # Catalog files generated for OLM testing
 /catalog/catalog.yaml
 /catalog/_template.yaml
