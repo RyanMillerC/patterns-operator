@@ -17,11 +17,15 @@ export default function PatternsCatalogModel(props: PatternsCatalogModelProps) {
 
   const data = props.data
 
+  const onClick = () => {
+    window.location.href = `/patterns-catalog/deploy?name=${props.data.metadata.name}`;
+  }
+
   return (
     <>
       <Modal
         actions={[
-          <Button key="confirm" variant="primary">
+          <Button onClick={onClick} key="confirm" variant="primary">
             Deploy Pattern
           </Button>,
         ]}
