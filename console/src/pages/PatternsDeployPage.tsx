@@ -4,6 +4,8 @@ import { Page, PageSection, TextContent, Text, Title } from '@patternfly/react-c
 import '../main.css';
 
 export default function PatternsDeployPage() {
+  const searchParams = new URLSearchParams(document.location.search)
+  const name = searchParams.get('name');
   return (
     <>
       <Helmet>
@@ -17,6 +19,11 @@ export default function PatternsDeployPage() {
           <TextContent>
             <Text component="p">
               Deploy a Hybrid Cloud Pattern from this page.
+            </Text>
+            <Text component="p">
+              <b>
+                Deploying {name}...
+              </b>
             </Text>
           </TextContent>
         </PageSection>
