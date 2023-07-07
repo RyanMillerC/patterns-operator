@@ -15,21 +15,26 @@ export type PatternManifest = {
   spec: {
     organization: {
       description?: string;
-      maintainers?: string;
+      maintainers?: {
+        name?: string;
+        email?: string;
+      };
       name?: string;
       url?: string;
     };
     pattern: {
-      badge?: string;
       branch?: string;
+      description?: string;
+      gitRepo?: string;
       longDescription?: string;
-      shortDescription?: string;
-      maintainers?: string;
+      maintainers?: {
+        name?: string;
+        email?: string;
+      };
       name?: string;
-      products?: {
-        name: string;
-      }[];
+      products?: string[];
       url?: string;
+      type?: string;
     };
   };
 } & K8sResourceCommon;

@@ -25,7 +25,7 @@ export default function PatternsCatalog() {
   });
 
   const [modalVisible, setModalVisible] = React.useState(false);
-  const [modalData, setModalData] = React.useState({});
+  const [modalData, setModalData] = React.useState(null);
 
   // TODO: Remove this; Using for validation
   console.log({ patternManifests });
@@ -84,12 +84,12 @@ export default function PatternsCatalog() {
               badges={[
                 <PatternsCatalogItemBadge
                   key={0}
-                  text={item.spec.pattern.badge}
+                  text={item.spec.pattern.type}
                 />,
               ]}
               title={item.spec.pattern.name}
               vendor={item.spec.organization.name}
-              description={item.spec.pattern.shortDescription}
+              description={item.spec.pattern.description}
               onClick={() => {
                 setModalData(item);
                 setModalVisible(true);

@@ -1,14 +1,21 @@
 import * as React from 'react';
 import { Button, Modal, ModalVariant } from '@patternfly/react-core';
+import { PatternManifest } from '../data/model';
 import '../main.css';
 
-export default function PatternsCatalogModel(props) {
+interface PatternsCatalogModelProps {
+  data?: PatternManifest;
+  isOpen: boolean;
+  onClose: any; // TODO: This is function; Maybe tell TypeScript that?
+};
+
+export default function PatternsCatalogModel(props: PatternsCatalogModelProps) {
   // TODO: Find a better way to check/validate that data comes in
-  if (props.data.metadata === undefined) {
+  if (!props.data) {
     return null;
   }
 
-  const data = props.data.spec
+  const data = props.data
 
   return (
     <>
@@ -20,26 +27,26 @@ export default function PatternsCatalogModel(props) {
         ]}
         isOpen={props.isOpen}
         onClose={props.onClose}
-        title={data.pattern.name}
+        title={data.spec.pattern.name}
         variant={ModalVariant.medium}
       >
         <h2>Organization</h2>
-        <p><b>Name:</b> {data.organization.name}</p>
-        <p><b>Description:</b> {data.organization.description}</p>
-        <p><b>URL:</b> <a href={data.organization.url}>{data.organization.url}</a></p>
-        <p><b>Maintainers:</b> {data.organization.maintainers}</p>
+        <p><b>Name:</b> {data.spec.organization.name}</p>
+        <p><b>Description:</b> {data.spec.organization.description}</p>
+        <p><b>URL:</b> <a href={data.spec.organization.url}>{data.spec.organization.url}</a></p>
+        {/* <p><b>Maintainers:</b> {data.spec.organization.maintainers}</p> /*}
         <br /> {/* TODO: Replace this hack */}
         <h2>Pattern</h2>
-        <p><b>Name:</b> {data.pattern.name}</p>
-        <p><b>Description:</b> {data.pattern.longDescription}</p>
-        <p><b>Branch:</b> {data.pattern.branch}</p>
-        <p><b>Type:</b> {data.pattern.badge}</p>
-        <p><b>URL:</b> <a href={data.pattern.url}>{data.pattern.url}</a></p>
+        <p><b>Name:</b> {data.spec.pattern.name}</p>
+        <p><b>Description:</b> {data.spec.pattern.longDescription}</p>
+        <p><b>Branch:</b> {data.spec.pattern.branch}</p>
+        <p><b>Type:</b> {data.spec.pattern.type}</p>
+        <p><b>URL:</b> <a href={data.spec.pattern.url}>{data.spec.pattern.url}</a></p>
         <p>
           <b>Products:</b>
           <ul>
-            {data.pattern.products.map((item) => {
-              return <li key={item.name}>{item.name}</li>;
+            {data.spec.pattern.products.map((item) => {
+              return <li key={item}>{item}</li>;
             })}
           </ul>
         </p>
