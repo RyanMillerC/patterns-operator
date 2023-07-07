@@ -18,6 +18,8 @@ export default function PatternsCatalogModel(props: PatternsCatalogModelProps) {
   const data = props.data
 
   const onClick = () => {
+    // TODO: This works but it refreshes the page, which reloads React. I tried using
+    // Redirect from react-router-dom but that didn't work.
     window.location.href = `/patterns-catalog/deploy?name=${props.data.metadata.name}`;
   }
 
