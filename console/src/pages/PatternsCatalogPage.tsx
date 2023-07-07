@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Helmet from 'react-helmet';
 import { Page, PageSection, TextContent, Text, Title } from '@patternfly/react-core';
-import PatternsCatalog from './PatternsCatalog';
+import PatternsCatalog from '../components/PatternsCatalog';
 import '../main.css';
 
 export default function PatternsCatalogPage() {
