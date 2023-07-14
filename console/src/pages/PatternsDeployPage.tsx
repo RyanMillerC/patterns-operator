@@ -15,15 +15,13 @@ export default function PatternsDeployPage() {
       <Page>
         <PageSection variant="light">
           <Title headingLevel="h1">Deploy Pattern</Title>
-        </PageSection>
-        <PageSection variant="light">
           <TextContent>
             <Text component="p">
               Deploy a Hybrid Cloud Pattern from this page.
             </Text>
-            <DeployYAMLEditor patternName={name} />
           </TextContent>
         </PageSection>
+        <DeployYAMLEditor patternName={name} />
       </Page>
     </>
   );

@@ -45,7 +45,21 @@ export default function PatternsDeployPage(props: any) {
     );
   }
 
-  const initialYAML: string = `gitRepo: ${patternManifest.spec.pattern.gitRepo}`;
+  const initialPatternResource: any = {
+    apiVersion: 'gitops.hybrid-cloud-patterns.io/v1alpha1',
+    kind: 'Pattern',
+    metadata: {
+      name: 'pattern-sample',
+      namespace: 'default'
+    },
+    spec: {
+      clusterGroupName: 'hub',
+      gitSpec: {
+        targetRepo: patternManifest.spec.pattern.gitRepo,
+        targetRevision: 'main'
+      }
+    }
+  };
 
 //   const initialResource = `apiVersion: gitops.hybrid-cloud-patterns.io/v1alpha1
 // kind: Pattern
@@ -71,9 +85,18 @@ export default function PatternsDeployPage(props: any) {
   //   </React.Suspense>
   // );
   return (
-    <ResourceYAMLEditor
-      initialResource={initialYAML}
-      header="Deploy Pattern"
-    />
+    <React.Suspense fallback={<ResourceYAMLEditorLoading />}>
+      <ResourceYAMLEditor
+        initialResource={initialPatternResource}
+        header="Deploy Pattern"
+      />
+    </React.Suspense>
+  );
+}
+
+// Shown while YAML editor is loading
+function ResourceYAMLEditorLoading() {
+  return (
+    <p>Loading...</p>
   );
 }
