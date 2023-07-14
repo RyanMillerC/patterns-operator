@@ -3,7 +3,7 @@
     "type": "console.page/route",
     "properties": {
       "exact": true,
-      "path": "/patterns-catalog",
+      "path": "/patterns/catalog",
       "component": { "$codeRef": "PatternsCatalogPage" }
     }
   },
@@ -11,7 +11,7 @@
     "type": "console.page/route",
     "properties": {
       "exact": true,
-      "path": "/patterns-catalog/deploy",
+      "path": "/patterns/deploy",
       "component": { "$codeRef": "PatternsDeployPage" }
     }
   },
@@ -20,7 +20,7 @@
     "properties": {
       "id": "patterns-catalog",
       "name": "Patterns Catalog",
-      "href": "/patterns-catalog",
+      "href": "/patterns/catalog",
       "perspective": "admin",
       "section": "patterns-section"
     }
