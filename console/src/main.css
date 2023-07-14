@@ -20,6 +20,21 @@
   width: 250px;
 }
 
+/*
+This is hacky but it makes it load like OperatorHub. OperatorHub catalog
+uses variables for height/width that I'm not 100% where they come from. We
+can't use them in this plugin though... :/
+*/
+.patterns-console-plugin__catalog_modal {
+  height: 100%; /* This drops some off the bottom of the screen. Shouldn't be noticeable. */
+  max-height: var(--pf-c-modal-box--MaxHeight);
+  padding: .5rem;
+  position: absolute;
+  right: 0;
+  top: 4.35rem;
+  width: 900px;
+}
+
 .patterns-console-plugin__validated_badge {
   color: var(--pf-global--palette--green-400);
 }

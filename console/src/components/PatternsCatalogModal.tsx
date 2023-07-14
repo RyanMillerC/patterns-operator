@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { Button, Modal, ModalVariant } from '@patternfly/react-core';
+//import { Button, Modal, ModalVariant } from '@patternfly/react-core';
+import { Button, Modal } from '@patternfly/react-core';
 import { PatternManifest } from '../data/model';
 import '../main.css';
 
@@ -32,9 +33,11 @@ export default function PatternsCatalogModel(props: PatternsCatalogModelProps) {
           </Button>,
         ]}
         isOpen={props.isOpen}
+        //hasNoBodyWrapper={true}
         onClose={props.onClose}
         title={data.spec.pattern.name}
-        variant={ModalVariant.medium}
+        // variant={ModalVariant.medium}
+        className='patterns-console-plugin__catalog_modal'
       >
         <h2>Organization</h2>
         <p><b>Name:</b> {data.spec.organization.name}</p>
