@@ -27,11 +27,6 @@ export default function PatternsCatalog() {
   const [modalVisible, setModalVisible] = React.useState(false);
   const [modalData, setModalData] = React.useState(null);
 
-  // TODO: Remove this; Using for validation
-  console.log({ patternManifests });
-  console.log({ loaded });
-  console.log({ loadError });
-
   if (loaded === false) {
     return (
       <>
@@ -98,7 +93,8 @@ export default function PatternsCatalog() {
           );
         })}
       </PageSection>
-      {/* Modal is only visable when a user clicks on a catalog item */}
+
+      {/* Modal is only visible when a user clicks on a catalog item */}
       <PatternsCatalogModal
         data={modalData}
         isOpen={modalVisible}

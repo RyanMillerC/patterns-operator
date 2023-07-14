@@ -21,6 +21,8 @@ export default function PatternsDeployPage() {
             </Text>
           </TextContent>
         </PageSection>
+
+        {/* Don't put DeployYAMLEditor inside a PageSection, it will make the height crazy short */}
         <DeployYAMLEditor patternName={name} />
       </Page>
     </>
