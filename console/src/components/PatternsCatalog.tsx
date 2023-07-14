@@ -1,4 +1,6 @@
 import * as React from 'react';
+// import { useHistory, useLocation } from 'react-router';
+// import { useHistory } from 'react-router';
 import {
   PageSection,
   Title,
@@ -63,7 +65,25 @@ export default function PatternsCatalog() {
     );
   }
 
-  // https://www.patternfly.org/v4/extensions/catalog-view/catalog-tile
+  // TODO: Probably move this?
+  // Query parameters are used for filtering and showing a specific Pattern in a modal
+  const url = new URL(location.toString());
+  console.log(url);
+  // const searchParams = new URLSearchParams(document.location.search)
+
+  // If detailsItem is set and matches a PatternManifest name, show the modal with data
+  // for the given pattern.
+  const detailsItem = url.searchParams.get('details-item');
+  console.log({detailsItem})
+  if (detailsItem && detailsItem !== modalData?.metadata?.name) {
+    patternManifests.map((item) => {
+      if (item.metadata.name === detailsItem) {
+        setModalData(item);
+        setModalVisible(true);
+      }
+    });
+  }
+
   return (
     <>
       <PageSection className="patterns-console-plugin__cards" variant="light">
@@ -86,6 +106,9 @@ export default function PatternsCatalog() {
               vendor={item.spec.organization.name}
               description={item.spec.pattern.description}
               onClick={() => {
+                url.searchParams.set('details-item', item.metadata.name);
+                window.history.pushState('', '', url.toString());
+                // TODO: Can probably take these out and have the logic looking at query parameters set this
                 setModalData(item);
                 setModalVisible(true);
               }}
@@ -98,7 +121,11 @@ export default function PatternsCatalog() {
       <PatternsCatalogModal
         data={modalData}
         isOpen={modalVisible}
-        onClose={() => setModalVisible(false)}
+        onClose={() => {
+          url.searchParams.delete('details-item');
+          window.history.pushState('', '', url.toString());
+          setModalVisible(false);
+        }}
       />
     </>
   );
