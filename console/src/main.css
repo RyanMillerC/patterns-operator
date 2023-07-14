@@ -35,6 +35,29 @@ can't use them in this plugin though... :/
   width: 900px;
 }
 
+.patterns-console-plugin__catalog_modal_flex_container {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.patterns-console-plugin__catalog_modal_properties_side_panel {
+  display: flex;
+  flex-basis: 100%;
+  flex-direction: column;
+  flex: 1;
+}
+
+.patterns-console-plugin__catalog_modal_content {
+  display: flex;
+  flex-basis: 100%;
+  flex-direction: column;
+  flex: 3;
+  padding-left: 2rem;
+}
+
 .patterns-console-plugin__validated_badge {
   color: var(--pf-global--palette--green-400);
 }

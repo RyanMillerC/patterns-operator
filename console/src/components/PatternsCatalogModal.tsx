@@ -1,6 +1,6 @@
 import * as React from 'react';
-//import { Button, Modal, ModalVariant } from '@patternfly/react-core';
-import { Button, Modal } from '@patternfly/react-core';
+import { Button, Modal, PageSection } from '@patternfly/react-core';
+import { PropertiesSidePanel, PropertyItem } from '@patternfly/react-catalog-view-extension';
 import { PatternManifest } from '../data/model';
 import '../main.css';
 
@@ -24,42 +24,86 @@ export default function PatternsCatalogModel(props: PatternsCatalogModelProps) {
     window.location.href = `/patterns-catalog/deploy?name=${props.data.metadata.name}`;
   }
 
+  const maintainersToString = () => {
+    let maintainers = new Array<string>();
+    data.spec.pattern.maintainers.map((item) => {
+      maintainers.push(`${item.name} <${item.email}>`);
+    });
+    return maintainers.join(', ');
+  }
+
   return (
-    <>
-      <Modal
-        actions={[
-          <Button onClick={onClick} key="confirm" variant="primary">
-            Deploy Pattern
-          </Button>,
-        ]}
-        isOpen={props.isOpen}
-        //hasNoBodyWrapper={true}
-        onClose={props.onClose}
-        title={data.spec.pattern.name}
-        // variant={ModalVariant.medium}
-        className='patterns-console-plugin__catalog_modal'
-      >
-        <h2>Organization</h2>
-        <p><b>Name:</b> {data.spec.organization.name}</p>
-        <p><b>Description:</b> {data.spec.organization.description}</p>
-        <p><b>URL:</b> <a href={data.spec.organization.url}>{data.spec.organization.url}</a></p>
+    <Modal
+      isOpen={props.isOpen}
+      //hasNoBodyWrapper={true}
+      onClose={props.onClose}
+      title={data.spec.pattern.name}
+      // variant={ModalVariant.medium}
+      className="patterns-console-plugin__catalog_modal"
+    >
+      <PageSection>
+        <Button onClick={onClick} key="confirm" variant="primary">
+          Deploy Pattern
+        </Button>
+      </PageSection>
+      {/* TODO: This shouldn't be a div */}
+      <div className="patterns-console-plugin__catalog_modal_flex_container">
+        <PageSection>
+          <PropertiesSidePanel className="patterns-console-plugin__catalog_modal_properties_side_panel">
+            <PropertyItem label="Provider" value={data.spec.organization.name} />
+            <PropertyItem label="Type" value={data.spec.pattern.type} />
+            <PropertyItem
+              label="URL"
+              value={
+                <a href={data.spec.pattern.url}>{data.spec.pattern.url}</a>
+              }
+            />
+            <PropertyItem
+              label="Git Repo"
+              value={
+                <a href={data.spec.pattern.gitRepo}>{data.spec.pattern.gitRepo}</a>
+              }
+            />
+            <PropertyItem label="Git Branch" value={data.spec.pattern.branch} />
+            <PropertyItem label="Maintainers" value={maintainersToString()} />
+          </PropertiesSidePanel>
+        </PageSection>
+
         {/* <p><b>Maintainers:</b> {data.spec.organization.maintainers}</p> /*}
         <br /> {/* TODO: Replace this hack */}
-        <h2>Pattern</h2>
-        <p><b>Name:</b> {data.spec.pattern.name}</p>
-        <p><b>Description:</b> {data.spec.pattern.longDescription}</p>
-        <p><b>Branch:</b> {data.spec.pattern.branch}</p>
-        <p><b>Type:</b> {data.spec.pattern.type}</p>
-        <p><b>URL:</b> <a href={data.spec.pattern.url}>{data.spec.pattern.url}</a></p>
-        <p>
-          <b>Products:</b>
+
+        {/* TODO: Not sure PageSection is being used right */}
+        <PageSection className="patterns-console-plugin__catalog_modal_content">
+          <h2>Description</h2>
+          <p>{data.spec.pattern.longDescription}</p>
+          <br />
+          <h2>Products</h2>
           <ul>
-            {data.spec.pattern.products.map((item) => {
-              return <li key={item}>{item}</li>;
-            })}
+            {
+              data.spec.pattern.products.map((item) => {
+                return (
+                  <li>{item}</li>
+                );
+              })
+            }
           </ul>
-        </p>
-      </Modal>
-    </>
+        </PageSection>
+
+        {/*
+          <p><b>Branch:</b> {data.spec.pattern.branch}</p>
+          <p><b>Type:</b> {data.spec.pattern.type}</p>
+          <p><b>URL:</b> <a href={data.spec.pattern.url}>{data.spec.pattern.url}</a></p>
+          <p>
+            <b>Products:</b>
+            <ul>
+              {data.spec.pattern.products.map((item) => {
+                return <li key={item}>{item}</li>;
+              })}
+            </ul>
+          </p>
+        </div>
+        */}
+      </div>
+    </Modal>
   );
 }

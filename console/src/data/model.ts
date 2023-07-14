@@ -15,10 +15,12 @@ export type PatternManifest = {
   spec: {
     organization: {
       description?: string;
-      maintainers?: {
-        name?: string;
-        email?: string;
-      };
+      maintainers?: [
+        {
+          name?: string;
+          email?: string;
+        }
+      ];
       name?: string;
       url?: string;
     };
@@ -27,10 +29,12 @@ export type PatternManifest = {
       description?: string;
       gitRepo?: string;
       longDescription?: string;
-      maintainers?: {
-        name?: string;
-        email?: string;
-      };
+      maintainers?: [
+        {
+          name?: string;
+          email?: string;
+        }
+      ];
       name?: string;
       products?: string[];
       url?: string;
