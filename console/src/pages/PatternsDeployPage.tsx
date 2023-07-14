@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Helmet from 'react-helmet';
 import { Page, PageSection, TextContent, Text, Title } from '@patternfly/react-core';
+import DeployYAMLEditor from '../components/DeployYAMLEditor';
 import '../main.css';
 
 export default function PatternsDeployPage() {
@@ -20,11 +21,7 @@ export default function PatternsDeployPage() {
             <Text component="p">
               Deploy a Hybrid Cloud Pattern from this page.
             </Text>
-            <Text component="p">
-              <b>
-                Deploying {name}...
-              </b>
-            </Text>
+            <DeployYAMLEditor patternName={name} />
           </TextContent>
         </PageSection>
       </Page>
