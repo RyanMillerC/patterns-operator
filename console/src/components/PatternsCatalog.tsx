@@ -26,6 +26,9 @@ export default function PatternsCatalog() {
     namespaced: true,
   });
 
+  // TODO: Use this state object for filtering the catalog view
+  // const [displayedPatternManifests, setDisplayedPatternManifests] = React.useState<PatternManifest[]>();
+
   const [modalVisible, setModalVisible] = React.useState(false);
   const [modalData, setModalData] = React.useState(null);
 
@@ -65,11 +68,8 @@ export default function PatternsCatalog() {
     );
   }
 
-  // TODO: Probably move this?
   // Query parameters are used for filtering and showing a specific Pattern in a modal
   const url = new URL(location.toString());
-  console.log(url);
-  // const searchParams = new URLSearchParams(document.location.search)
 
   // If detailsItem is set and matches a PatternManifest name, show the modal with data
   // for the given pattern.
@@ -83,6 +83,19 @@ export default function PatternsCatalog() {
       }
     });
   }
+
+  // TODO: Use this function to wire up catalog filtering
+  //
+  // const filterCatalog = () => {
+  //   let filteredPatternManifests = patternManifests;
+  //   const typeParam = url.searchParams.get('type');
+  //   if (typeParam) {
+  //     filteredPatternManifests.filter((item) => {
+  //       return item.spec.pattern.type === typeParam
+  //     });
+  //   }
+  //   setDisplayedPatternManifests(filteredPatternManifests);
+  // }
 
   return (
     <>
