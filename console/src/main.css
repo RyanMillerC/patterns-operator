@@ -28,6 +28,12 @@
   padding-left: 2rem;
 }
 
+/* TODO: This is a hack for now; redo it! */
+.patterns-console-plugin__catalog_search {
+  margin: 1rem;
+  width: 225px;
+}
+
 .patterns-console-plugin__cards {
   display: flex;
   flex-wrap: wrap;

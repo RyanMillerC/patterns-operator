@@ -2,6 +2,7 @@ import * as React from 'react';
 // import { useHistory, useLocation } from 'react-router';
 // import { useHistory } from 'react-router';
 import {
+  SearchInput,
   PageSection,
   Title,
   EmptyState,
@@ -110,6 +111,10 @@ export default function PatternsCatalog() {
           <PatternsCatalogFilter />
         </div>
         <div className="patterns-console-plugin__catalog_content">
+          <SearchInput
+            className="patterns-console-plugin__catalog_search"
+            placeholder="Filter by keyword..."
+          />
           <div className="patterns-console-plugin__cards">
             {patternManifests.map((item) => {
               return (
