@@ -89,7 +89,7 @@ export default function PatternsDeployPage(props: any) {
       });
 
       // If successful, redirect to the new Pattern resource
-      window.location.href = `/k8s/ns/default/clusterserviceversions/patterns-operator.v0.0.17/gitops.hybrid-cloud-patterns.io~v1alpha1~${jsonContent.metadata.name}`
+      window.location.href = `/k8s/ns/default/clusterserviceversions/patterns-operator.v0.0.17/gitops.hybrid-cloud-patterns.io~v1alpha1~Pattern/${jsonContent.metadata.name}`
     } catch (e) {
       console.error(e.message);
       setError(e.message);
