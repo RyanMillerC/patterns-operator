@@ -18,8 +18,14 @@ export default function PatternsCatalogPage() {
         <PageSection variant="light">
           <TextContent>
             <Text component="p">
-              <span className="console-plugin-template__nice">Hybrid Cloud
-              Patterns</span> are an evolution of how you deploy applications in
+              <a
+                href="https://hybrid-cloud-patterns.io/"
+                rel="noopener"
+                target="_blank"
+              >
+                Hybrid Cloud Patterns
+              </a>
+              are an evolution of how you deploy applications in
               a hybrid cloud. With a pattern, you can automatically deploy a
               full application stack through a GitOps-based framework. With this
               framework, you can create business-centric solutions while

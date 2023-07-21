@@ -55,13 +55,25 @@ export default function PatternsCatalogModel(props: PatternsCatalogModelProps) {
             <PropertyItem
               label="URL"
               value={
-                <a href={data.spec.pattern.url}>{data.spec.pattern.url}</a>
+                <a
+                  href={data.spec.pattern.url}
+                  rel="noopener"
+                  target="_blank"
+                >
+                  {data.spec.pattern.url}
+                </a>
               }
             />
             <PropertyItem
               label="Git Repo"
               value={
-                <a href={data.spec.pattern.gitRepo}>{data.spec.pattern.gitRepo}</a>
+                <a
+                  href={data.spec.pattern.gitRepo}
+                  rel="noopener"
+                  target="_blank"
+                >
+                  {data.spec.pattern.gitRepo}
+                </a>
               }
             />
             <PropertyItem label="Git Branch" value={data.spec.pattern.branch} />
