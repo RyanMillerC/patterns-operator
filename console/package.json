@@ -68,5 +68,8 @@
     "dependencies": {
       "@console/pluginAPI": "*"
     }
+  },
+  "dependencies": {
+    "js-yaml": "^4.1.0"
   }
 }

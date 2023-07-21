@@ -1,3 +1,5 @@
+// TODO: Rename this file to patternManifest.ts
+
 import {
   K8sGroupVersionKind,
   K8sResourceCommon,

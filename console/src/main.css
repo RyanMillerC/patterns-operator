@@ -65,3 +65,9 @@ can't use them in this plugin though... :/
 .patterns-console-plugin__community_badge {
   color: var(--pf-global--palette--blue-400);
 }
+
+.patterns-console-plugin__deploy_yaml_alert {
+  box-shadow: none;
+  margin: 0em 2em 2em;
+  white-space: pre-wrap;
+}
