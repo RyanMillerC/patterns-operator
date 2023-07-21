@@ -3,6 +3,7 @@ import { FilterSidePanel, FilterSidePanelCategory, FilterSidePanelCategoryItem }
 //import { TextInput } from '@patternfly/react-core';
 
 export default function PatternsCatalogFilter() {
+  // TODO: Wire up filtering. At the moment this just looks nice and doesn't actually do anything
   return (
     <FilterSidePanel>
       <FilterSidePanelCategory key="type" title="Type">
