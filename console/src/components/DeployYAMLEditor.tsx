@@ -53,7 +53,7 @@ export default function PatternsDeployPage(props: any) {
     apiVersion: 'gitops.hybrid-cloud-patterns.io/v1alpha1',
     kind: 'Pattern',
     metadata: {
-      name: 'pattern-sample',
+      name: patternManifest.metadata.name,
       namespace: 'default'
     },
     spec: {
