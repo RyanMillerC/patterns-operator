@@ -13,6 +13,13 @@
 }
 
 .patterns-console-plugin__card {
+  /* I tried hard to get box-shadow working here. CatalogTile
+  will override any box-shadow properties set in this class.
+  Border properties look visually similar and aren't overwritten. */
+  border: rgba(3, 3, 3, 0.12) solid .05rem;
+  border-top: none;
+  border-right: rgba(3, 3, 3, 0.12) solid .1rem;
+  border-bottom: rgba(3, 3, 3, 0.12) solid .1rem;
   color: var(--pf-c-content--Color);
   flex: 0 0 250px;
   height: 250px;
