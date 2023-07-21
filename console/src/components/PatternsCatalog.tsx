@@ -17,6 +17,7 @@ import CubesIcon from '@patternfly/react-icons/dist/esm/icons/cubes-icon';
 import '../main.css';
 import PatternsCatalogModal from './PatternsCatalogModal';
 import PatternsCatalogItemBadge from './PatternsCatalogItemBadge';
+import PatternsCatalogFilter from './PatternsCatalogFilter';
 
 export default function PatternsCatalog() {
   const [patternManifests, loaded, loadError] = useK8sWatchResource<PatternManifest[]>({
@@ -99,35 +100,45 @@ export default function PatternsCatalog() {
 
   return (
     <>
-      <PageSection className="patterns-console-plugin__cards" variant="light">
-        {patternManifests.map((item) => {
-          return (
-            <CatalogTile
-              className="patterns-console-plugin__card"
-              key={item.metadata.name}
-              id={item.metadata.name}
-              // TODO: If we want an image, here's where it goes!
-              // iconImg={pfLogo2}
-              // iconAlt="PatternFly logo"
-              badges={[
-                <PatternsCatalogItemBadge
-                  key={0}
-                  text={item.spec.pattern.type}
-                />,
-              ]}
-              title={item.spec.pattern.name}
-              vendor={item.spec.organization.name}
-              description={item.spec.pattern.description}
-              onClick={() => {
-                url.searchParams.set('details-item', item.metadata.name);
-                window.history.pushState('', '', url.toString());
-                // TODO: Can probably take these out and have the logic looking at query parameters set this
-                setModalData(item);
-                setModalVisible(true);
-              }}
-            />
-          );
-        })}
+      <PageSection
+        className="patterns-console-plugin__catalog_flex_container"
+        variant="light"
+      >
+        <div className="patterns-console-plugin__catalog_side_panel">
+          <PatternsCatalogFilter />
+        </div>
+        <div className="patterns-console-plugin__catalog_content">
+          <div className="patterns-console-plugin__cards">
+            {patternManifests.map((item) => {
+              return (
+                <CatalogTile
+                  className="patterns-console-plugin__card"
+                  key={item.metadata.name}
+                  id={item.metadata.name}
+                  // TODO: If we want an image, here's where it goes!
+                  // iconImg={pfLogo2}
+                  // iconAlt="PatternFly logo"
+                  badges={[
+                    <PatternsCatalogItemBadge
+                      key={0}
+                      text={item.spec.pattern.type}
+                    />,
+                  ]}
+                  title={item.spec.pattern.name}
+                  vendor={item.spec.organization.name}
+                  description={item.spec.pattern.description}
+                  onClick={() => {
+                    url.searchParams.set('details-item', item.metadata.name);
+                    window.history.pushState('', '', url.toString());
+                    // TODO: Can probably take these out and have the logic looking at query parameters set this
+                    setModalData(item);
+                    setModalVisible(true);
+                  }}
+                />
+              );
+            })}
+          </div>
+        </div>
       </PageSection>
 
       {/* Modal is only visible when a user clicks on a catalog item */}

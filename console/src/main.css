@@ -6,6 +6,28 @@
   color: var(--pf-global--palette--blue-400);
 }
 
+.patterns-console-plugin__catalog_flex_container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.patterns-console-plugin__catalog_side_panel {
+  display: flex;
+  flex-basis: 100%;
+  flex-direction: column;
+  flex: 1;
+}
+
+.patterns-console-plugin__catalog_content {
+  display: flex;
+  flex-basis: 100%;
+  flex-direction: column;
+  flex: 5;
+  padding-left: 2rem;
+}
+
 .patterns-console-plugin__cards {
   display: flex;
   flex-wrap: wrap;
@@ -43,10 +65,10 @@ can't use them in this plugin though... :/
 }
 
 .patterns-console-plugin__catalog_modal_flex_container {
-  margin-top: 2rem;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  margin-top: 2rem;
   width: 100%;
 }
 
