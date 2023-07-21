@@ -5,4 +5,4 @@ metadata:
   name: default
   namespace: default
 spec:
-  source: 'https://raw.githubusercontent.com/RyanMillerC/pattern-catalog/main/catalog.yaml'
+  source: 'https://raw.githubusercontent.com/hybrid-cloud-patterns/patterns-catalog/main/catalog.yaml'
