@@ -19,6 +19,8 @@ import PatternsCatalogModal from './PatternsCatalogModal';
 import PatternsCatalogItemBadge from './PatternsCatalogItemBadge';
 import PatternsCatalogFilter from './PatternsCatalogFilter';
 
+import Logo from '../img/hcp-logo.png';
+
 export default function PatternsCatalog() {
   const [patternManifests, loaded, loadError] = useK8sWatchResource<PatternManifest[]>({
     groupVersionKind: patternManifestKind,
@@ -116,8 +118,8 @@ export default function PatternsCatalog() {
                   key={item.metadata.name}
                   id={item.metadata.name}
                   // TODO: If we want an image, here's where it goes!
-                  // iconImg={pfLogo2}
-                  // iconAlt="PatternFly logo"
+                  iconImg={Logo}
+                  iconAlt="Hybrid Cloud Patterns Logo"
                   badges={[
                     <PatternsCatalogItemBadge
                       key={0}
