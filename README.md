@@ -1,30 +1,83 @@
+# Patterns Operator
+
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-Here be dragons
+The Patterns Operator does things.
 
-References:
-- https://sdk.operatorframework.io/docs/building-operators/golang/quickstart/
+TODO: Update description
 
-Follow https://sdk.operatorframework.io/docs/installation/ to install the operator-sdk
+The Validated Patterns Operator 
 
+## Installing the Operator
 
-## Deploy the operator
+You need to have an OpenShift cluster up and running to install the operator.
+Once you have a cluster up:
 
-Search OperatorHub for "pattern" and accept all the defaults
+* Navigate to *Operators > OperatorHub* on the sidebar
+* Search for "Validated Patterns Operator"
+    * Validated Patterns Operator is a community operator. This will cause
+    OpenShift to display a message describing community operators. Select
+    *Continue* if you agree.
+* Select *Install*
+* At the bottom of the Install Operator page, under *Console Plugin*, select
+*Enable*
+    * Because Validated Patterns Operator is a community operator, OpenShift
+    disables console plugins for security. If you trust the operator, you are
+    safe to check the box.
+* Leave the other settings as their defaults and at the bottom of the page
+select *Install*
+* A few moments after the operator installs, a prompt will appear in the
+top-right corner of the OpenShift console asking you to refresh the page.
 
-## Create the Multi-Cloud GitOps pattern
+## Using the Patterns Catalog
+
+Validated Patterns Operator includes a catalog of available patterns from the
+Hybrid Cloud Patterns GitHub repositories. These can be deployed as-is for demo
+and testing purposes.
+
+If you have custom patterns, you can import those into the catalog.
+
+TODO: Describe how to do that ^^
+
+To use the catalog:
+
+* Navigate to *Patterns > PatternCatalogSource*
+* Select the pattern you want to deploy
+* In the pop up modal, read through the description of the pattern
+    * Some patterns have additional requirements. Make sure you understand the
+    requirements for the pattern you are deploying to avoid issues with the
+    deployment.
+* If you meet the requirements for the pattern, select *Install*
+* Optionally, edit the YAML manifest to include any extra parameters
+* Once the manifest looks good, select *Save*
+
+## Monitoring deployment
+
+After creating a Pattern manifest, the Validated Patterns Operator will deploy
+the resources specified by the pattern. This can take considerable time for
+complex patterns.
+
+You can monitor progress by periodically checking the *Status* of the Pattern
+resource you created.
+
+Additionally, you can check the application status with:
 
 ```
-kubectl create -f config/samples/gitops_v1alpha1_pattern.yaml
+$ oc get applications -A -w
 ```
 
-### Check the status
+And check pod logs with:
+
 ```
-kubectl get -f config/samples/gitops_v1alpha1_pattern.yaml -o yaml
-oc get applications -A -w
+$ oc logs -n patterns-operator-system `oc get -n patterns-operator-system pods -o name --field-selector status.phase=Running | grep patterns` -c manager -f
 ```
 
-### Load secrets into the vault
+**NOTE:** Older versions of the Validated Patterns Operator used the namespace
+`openshift-operators` and not `patterns-operator-system`.
+
+## Load secrets into the vault
+
+TODO: Idk what we are doing here yet
 
 In order to load the secrets out of band into the vault you can copy the
 `values-secret.yaml.template` inside the pattern's git repo to
@@ -33,24 +86,20 @@ load-secrets`. Otherwise you can access the vault via its network route, login
 via the root token (contained in the `imperative` namespace in the `vaultkeys`
 secret and then add the secrets via the UI (this approach is a bit more work)
 
-### Delete the pattern
+## Deleting a pattern
 
-```
-kubectl delete -f config/samples/gitops_v1alpha1_pattern.yaml
-```
+Deleting a pattern isn't a good idea. If you absolutely need to delete a
+pattern, you should delete the Pattern resource you created.
 
-This will only remove the top-level application.
-The subscription and anything created by Argo will not be removed and canmust be removed manually.
-Removing the top-level application ensures that Argo won't try to put back anything you delete.
+**This will only remove the top-level application. The subscription and anything
+created by Argo will not be removed and must be removed manually. Removing the
+top-level application ensures that Argo won't try to put back anything you
+delete.**
 
-## Watch the logs
+## Operator Development
 
-Note that when installing via UI the namespace will be `openshift-operators` and not `patterns-operator-system`
-```
-oc logs -npatterns-operator-system `oc get -npatterns-operator-system pods -o name --field-selector status.phase=Running | grep patterns` -c manager -f
-```
-
-## Development
+See [DEVELOPEMENT.md](DEVELOPEMENT.md) for instructions on developing the
+Validated Patterns Operator.
 
 ### Vocabulary (TODO: Move this section)
 
@@ -59,6 +108,15 @@ oc logs -npatterns-operator-system `oc get -npatterns-operator-system pods -o na
 * PatternCatalogSource - A Kubernetes object that points to a Pattern Catalog YAML file.
 * PatternManifest - A Kubernetes object containing metadata about a single Pattern. These are generated by a PatternCatalogSource.
 * Pattern Catalog Plugin - OpenShift Console plugin to view and install patterns. This UI is populated with data from PatternManifests.
+
+Here be dragons
+
+References:
+
+- https://sdk.operatorframework.io/docs/building-operators/golang/quickstart/
+
+Follow https://sdk.operatorframework.io/docs/installation/ to install the operator-sdk
+
 
 ### Test your changes locally against a remote cluster
 
