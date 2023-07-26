@@ -53,6 +53,9 @@ func init() {
 	//+kubebuilder:scaffold:scheme
 }
 
+// TODO: I'm not sure this will work here
+//+kubebuilder:rbac:groups="",resources=namespaces,verbs=get;list;watch;create;update;patch;delete
+
 func main() {
 	var metricsAddr string
 	var enableLeaderElection bool
