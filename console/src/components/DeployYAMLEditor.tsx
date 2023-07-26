@@ -21,7 +21,7 @@ export default function PatternsDeployPage(props: any) {
       try {
         const fetchedPatternManifest: PatternManifest = await k8sGet({
           model: PatternManifestModel,
-          ns: 'default',
+          ns: 'patterns-operator', // TODO: Maybe look at all namespaces?
           name: props.patternName
         });
         setPatternManifest(fetchedPatternManifest);
