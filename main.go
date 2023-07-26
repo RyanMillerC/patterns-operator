@@ -36,6 +36,7 @@ import (
 	gitopsv1alpha1 "github.com/hybrid-cloud-patterns/patterns-operator/api/v1alpha1"
 	"github.com/hybrid-cloud-patterns/patterns-operator/controllers"
 	"github.com/hybrid-cloud-patterns/patterns-operator/pkg/console"
+	"github.com/hybrid-cloud-patterns/patterns-operator/pkg/setup"
 	"github.com/hybrid-cloud-patterns/patterns-operator/version"
 	//+kubebuilder:scaffold:imports
 )
@@ -110,11 +111,19 @@ func main() {
 		os.Exit(1)
 	}
 
+	// Create the patterns-catalog namespace. This needs to be done early because
+	// other functions create resources in this namespace the first time the
+	// controller is started.
+	err = setup.CreatePatternsOperatorNamespace()
+	if err != nil {
+		setupLog.Error(err, "unable to create Namespace")
+	}
+
 	// Create the default PatternCatalogSource. This has to be done before
 	// starting the manager, which kicks off the reconsile infinite loop.
 	err = controllers.CreateDefaultPatternCatalogSource()
 	if err != nil {
-		setupLog.Error(err, "unable to create default PatternCatalogSource")
+		setupLog.Error(err, "unable to create PatternCatalogSource")
 	}
 
 	// Create resources (Deployment, Service, and ConsolePlugin) required to run
