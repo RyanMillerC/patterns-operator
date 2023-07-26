@@ -53,7 +53,7 @@ func init() {
 	//+kubebuilder:scaffold:scheme
 }
 
-// TODO: I'm not sure this will work here
+// TODO: Is this the best place for this?
 //+kubebuilder:rbac:groups="",resources=namespaces,verbs=get;list;watch;create;update;patch;delete
 
 func main() {
