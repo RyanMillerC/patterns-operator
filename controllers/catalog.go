@@ -114,16 +114,10 @@ func CreateDefaultPatternCatalogSource() error {
 		return err
 	}
 
-	// Namespace won't be dynamically assigned if omitted from object
-	namespace, err := GetControllerNamespace()
-	if err != nil {
-		return err
-	}
-
 	pcs := &api.PatternCatalogSource{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      "default",
-			Namespace: namespace,
+			Namespace: "patterns-operator",
 		},
 		Spec: api.PatternCatalogSourceSpec{
 			Source: "https://raw.githubusercontent.com/hybrid-cloud-patterns/patterns-catalog/main/catalog.yaml",

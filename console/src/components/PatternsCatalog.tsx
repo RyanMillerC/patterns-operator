@@ -26,7 +26,7 @@ export default function PatternsCatalog() {
   const [patternManifests, loaded, loadError] = useK8sWatchResource<PatternManifest[]>({
     groupVersionKind: patternManifestKind,
     isList: true,
-    namespace: 'default',
+    namespace: 'patterns-operator',
     namespaced: true,
   });
 

@@ -54,7 +54,7 @@ export default function PatternsDeployPage(props: any) {
     kind: 'Pattern',
     metadata: {
       name: patternManifest.metadata.name,
-      namespace: 'default'
+      namespace: 'patterns-operator'
     },
     spec: {
       clusterGroupName: 'hub',

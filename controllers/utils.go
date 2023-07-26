@@ -88,6 +88,7 @@ func ParametersToMap(parameters []api.PatternParameter) map[string]interface{} {
 	return output
 }
 
+// TODO: This isn't used anymore. There's a duplicate of this function in pkg/console/console.go. They should be consolidated.
 // Return the namespace of the running controller
 //
 // There's not an easy way to do this so here's a link to the pattern being
