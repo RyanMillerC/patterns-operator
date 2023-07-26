@@ -24,6 +24,7 @@ export default function PatternsCatalogModel(props: PatternsCatalogModelProps) {
     window.location.href = `/patterns/deploy?name=${props.data.metadata.name}`;
   }
 
+  /*
   const maintainersToString = () => {
     let maintainers = new Array<string>();
     data.spec.pattern.maintainers.map((item) => {
@@ -31,6 +32,7 @@ export default function PatternsCatalogModel(props: PatternsCatalogModelProps) {
     });
     return maintainers.join(', ');
   }
+  */
 
   return (
     <Modal
@@ -77,7 +79,7 @@ export default function PatternsCatalogModel(props: PatternsCatalogModelProps) {
               }
             />
             <PropertyItem label="Git Branch" value={data.spec.pattern.branch} />
-            <PropertyItem label="Maintainers" value={maintainersToString()} />
+            {/* <PropertyItem label="Maintainers" value={maintainersToString()} /> */}
           </PropertiesSidePanel>
         </PageSection>
 
