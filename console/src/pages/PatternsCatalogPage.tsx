@@ -23,7 +23,7 @@ export default function PatternsCatalogPage() {
                 rel="noopener"
                 target="_blank"
               >
-                Hybrid Cloud Patterns
+                Hybrid Cloud Patterns{' '} {/* Force space between words */}
               </a>
               are an evolution of how you deploy applications in
               a hybrid cloud. With a pattern, you can automatically deploy a
