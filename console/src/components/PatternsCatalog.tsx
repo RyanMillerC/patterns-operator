@@ -62,7 +62,7 @@ export default function PatternsCatalog() {
               No PatternManifests found
             </Title>
             <EmptyStateBody>
-              No PatternManifests exist in the <code>default</code> namespace.
+              No PatternManifests exist in the <code>patterns-operator</code> namespace.
               Import the default catalog.yaml or create a PatternCatalogSource
               and point to and point to your own catalog.yaml.
             </EmptyStateBody>
