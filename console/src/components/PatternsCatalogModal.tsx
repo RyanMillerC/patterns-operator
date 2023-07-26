@@ -24,15 +24,17 @@ export default function PatternsCatalogModel(props: PatternsCatalogModelProps) {
     window.location.href = `/patterns/deploy?name=${props.data.metadata.name}`;
   }
 
-  /*
   const maintainersToString = () => {
+    /*
     let maintainers = new Array<string>();
     data.spec.pattern.maintainers.map((item) => {
       maintainers.push(`${item.name} <${item.email}>`);
     });
     return maintainers.join(', ');
+    */
+    // TODO: The controller is not populating the maintainers field on PatternManifests. Once that is fixed, this hack can be removed.
+    return "Validated Patterns Team <team-validated-patterns@redhat.com>"
   }
-  */
 
   return (
     <Modal
@@ -79,11 +81,10 @@ export default function PatternsCatalogModel(props: PatternsCatalogModelProps) {
               }
             />
             <PropertyItem label="Git Branch" value={data.spec.pattern.branch} />
-            {/* <PropertyItem label="Maintainers" value={maintainersToString()} /> */}
+            <PropertyItem label="Maintainers" value={maintainersToString()} />
           </PropertiesSidePanel>
         </PageSection>
 
-        {/* <p><b>Maintainers:</b> {data.spec.organization.maintainers}</p> /*}
         <br /> {/* TODO: Replace this hack */}
 
         {/* TODO: Not sure PageSection is being used right */}
