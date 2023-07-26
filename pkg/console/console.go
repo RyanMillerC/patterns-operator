@@ -26,7 +26,6 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	"github.com/hybrid-cloud-patterns/patterns-operator/pkg/config"
-	"github.com/hybrid-cloud-patterns/patterns-operator/version"
 )
 
 var consoleLog = ctrl.Log.WithName("console")
@@ -100,16 +99,12 @@ func DeployConsolePlugin() error {
 		return err
 	}
 
-	deployment := getDeployment(name, namespace)
-	// If set, override the container image tag
-	if config.OverrideConsolePluginImageTag != "" {
-		image := fmt.Sprintf(
-			"%s:%s",
-			config.ConsolePluginImage,
-			config.OverrideConsolePluginImageTag,
-		)
-		deployment.Spec.Template.Spec.Containers[0].Image = image
+	img, err := getConsolePluginImageName()
+	if err != nil {
+		return err
 	}
+
+	deployment := getDeployment(name, namespace, img)
 	err = createOrUpdateDeployment(kclient, &deployment)
 	if err != nil {
 		return err
@@ -177,6 +172,14 @@ func getControllerNamespace() (string, error) {
 	return "", errors.New("could not determine controller namespace. Set CONTROLLER_NAMESPACE environment variable if running controller outside of cluster")
 }
 
+// Get name and tag console plugin image
+func getConsolePluginImageName() (string, error) {
+	if img, ok := os.LookupEnv("CONSOLE_PLUGIN_IMAGE_NAME"); ok {
+		return img, nil
+	}
+	return "", errors.New("could not determine console plugin image name. Set CONSOLE_PLUGIN_IMAGE_NAME environment variable to deploy the console plugin")
+}
+
 // Create or update the Deployment for a console dynamic plugin
 func createOrUpdateDeployment(kclient client.Client, deployment *appsv1.Deployment) error {
 	var found appsv1.Deployment
@@ -209,7 +212,7 @@ func createOrUpdateDeployment(kclient client.Client, deployment *appsv1.Deployme
 	return nil
 }
 
-func getDeployment(name string, namespace string) appsv1.Deployment {
+func getDeployment(name string, namespace string, img string) appsv1.Deployment {
 	deployment := appsv1.Deployment{
 		TypeMeta: metav1.TypeMeta{
 			Kind:       "Deployment",
@@ -250,7 +253,7 @@ func getDeployment(name string, namespace string) appsv1.Deployment {
 					Containers: []corev1.Container{
 						{
 							Name:  name,
-							Image: fmt.Sprintf("%s:%s", config.ConsolePluginImage, version.Version),
+							Image: img,
 							Ports: []corev1.ContainerPort{
 								{
 									ContainerPort: 9443,

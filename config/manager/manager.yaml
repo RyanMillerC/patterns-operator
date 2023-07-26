@@ -38,6 +38,10 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
+        # Used by controller to determine which console plugin image to deploy
+        - name: CONSOLE_PLUGIN_IMAGE_NAME
+          # TODO: Dynamically replace this value!!
+          value: 'quay.io/rymiller/patterns-operator-console-plugin:v0.0.20'
         image: controller:latest
         name: manager
         securityContext:
