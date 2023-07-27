@@ -89,7 +89,8 @@ export default function PatternsDeployPage(props: any) {
       });
 
       // If successful, redirect to the new Pattern resource
-      window.location.href = `/k8s/ns/patterns-operator/clusterserviceversions/patterns-operator.v0.0.17/gitops.hybrid-cloud-patterns.io~v1alpha1~Pattern/${jsonContent.metadata.name}`
+      // TODO: The version here is hard coded. That is bad. Fix it
+      window.location.href = `/k8s/ns/patterns-operator/clusterserviceversions/patterns-operator.v0.0.20/gitops.hybrid-cloud-patterns.io~v1alpha1~Pattern/${jsonContent.metadata.name}`
     } catch (e) {
       console.error(e.message);
       setError(e.message);
