@@ -57,10 +57,10 @@ export default function PatternsDeployPage(props: any) {
       namespace: 'patterns-operator'
     },
     spec: {
-      clusterGroupName: 'hub',
+      clusterGroupName: 'hub', // TODO: Is this needed?
       gitSpec: {
         targetRepo: patternManifest.spec.pattern.gitRepo,
-        targetRevision: 'main'
+        targetRevision: patternManifest.spec.pattern.branch
       }
     }
   };
