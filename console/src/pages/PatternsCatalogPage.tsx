@@ -9,11 +9,11 @@ export default function PatternsCatalogPage() {
   return (
     <>
       <Helmet>
-        <title data-test="example-page-title">Pattern Catalog</title>
+        <title data-test="example-page-title">Patterns Catalog</title>
       </Helmet>
       <Page>
         <PageSection variant="light">
-          <Title headingLevel="h1">Pattern Catalog</Title>
+          <Title headingLevel="h1">Patterns Catalog</Title>
         </PageSection>
         <PageSection variant="light">
           <TextContent>
