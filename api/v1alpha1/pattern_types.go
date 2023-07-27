@@ -174,7 +174,7 @@ type PatternStatus struct {
 //+kubebuilder:printcolumn:name="Error",type=string,JSONPath=`.status.lastError`,priority=2
 //+operator-sdk:csv:customresourcedefinitions:resources={{"Pattern","v1alpha1","patterns"}}
 
-// Pattern is the Schema for the patterns API
+// Pattern is used to deploy a pattern against an OpenShift cluster
 type Pattern struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`

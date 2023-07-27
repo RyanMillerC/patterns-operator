@@ -47,7 +47,7 @@ type PatternCatalogSourceStatus struct {
 //+kubebuilder:object:root=true
 //+kubebuilder:subresource:status
 
-// PatternCatalogSource points to a remote Catalog YAML manifest that contains metadata about available patterns
+// PatternCatalogSource points to a remote Catalog YAML file that contains metadata about an organization and one or more patterns
 type PatternCatalogSource struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`

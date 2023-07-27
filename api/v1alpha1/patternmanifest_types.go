@@ -100,7 +100,7 @@ type PatternManifestStatus struct {
 //+kubebuilder:object:root=true
 //+kubebuilder:subresource:status
 
-// PatternManifest is the Schema for the patternmanifests API
+// PatternManifest contains organization and pattern metadata for a single pattern
 type PatternManifest struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
