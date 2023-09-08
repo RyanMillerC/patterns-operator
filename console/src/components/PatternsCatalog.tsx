@@ -70,6 +70,15 @@ export default function PatternsCatalog() {
     });
   }
 
+  // Filter by Search
+  if (url.searchParams.get('search')) {
+    filteredPatternManifests = filteredPatternManifests.filter((item) => {
+      const lowercasePatternName = item.spec.pattern.name.toLowerCase();
+      const lowercaseSearchParam = url.searchParams.get('search').toLowerCase();
+      return lowercasePatternName.includes(lowercaseSearchParam);
+    });
+  }
+
   // If detailsItem is set and matches a PatternManifest name, show the modal with data
   // for the given pattern.
   const detailsItem = url.searchParams.get('details-item');
