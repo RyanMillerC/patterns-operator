@@ -25,15 +25,11 @@ export default function PatternsCatalogModel(props: PatternsCatalogModelProps) {
   }
 
   const maintainersToString = () => {
-    /*
     let maintainers = new Array<string>();
     data.spec.pattern.maintainers.map((item) => {
       maintainers.push(`${item.name} <${item.email}>`);
     });
     return maintainers.join(', ');
-    */
-    // TODO: The controller is not populating the maintainers field on PatternManifests. Once that is fixed, this hack can be removed.
-    return "Validated Patterns Team <team-validated-patterns@redhat.com>"
   }
 
   return (
