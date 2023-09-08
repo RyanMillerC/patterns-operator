@@ -21,6 +21,7 @@ import PatternsCatalogItemBadge from './PatternsCatalogItemBadge';
 import PatternsCatalogFilter from './PatternsCatalogFilter';
 
 import Logo from '../img/hcp-logo.png';
+import * as queryUtils from '../queryUtils';
 
 export default function PatternsCatalog() {
   // Get all PatternManifests through React hook
@@ -41,22 +42,33 @@ export default function PatternsCatalog() {
   // URL for getting and setting search (query) parameters
   const url = new URL(location.toString());
 
-  // Create a new array with values from patternManifests that will be filtered
+  // Create a new array with values from patternManifests. This array will be
+  // filtered and remaining objects in the array will be displayed.
   let filteredPatternManifests = [];
   filteredPatternManifests.push(...patternManifests);
 
   // Filter by type
   if (url.searchParams.get('type')) {
     filteredPatternManifests = filteredPatternManifests.filter((item) => {
-      console.log(item.spec.pattern.type);
-      console.log(url.searchParams.get('type'));
       return item.spec.pattern.type === url.searchParams.get('type')
     });
   }
 
-  console.log(filteredPatternManifests);
-
-  // Update queryParams if the query parameters in the URL have changed
+  // Filter by Products
+  if (url.searchParams.get('products')) {
+    filteredPatternManifests = filteredPatternManifests.filter((item) => {
+      const queryProducts = queryUtils.queryParamToArray(url.searchParams.get('products'))
+      const itemProducts = item.spec.pattern.products
+      for (const queryProduct of queryProducts) {
+        if (itemProducts.indexOf(queryProduct) <= 0) {
+          console.log(`${queryProduct} is not in ${itemProducts}`);
+          console.log({itemProducts});
+          return false
+        }
+      }
+      return true
+    });
+  }
 
   // If detailsItem is set and matches a PatternManifest name, show the modal with data
   // for the given pattern.
