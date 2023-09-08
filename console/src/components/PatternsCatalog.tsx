@@ -32,46 +32,35 @@ export default function PatternsCatalog() {
   });
 
   // Used by search box and sidebar filters
-  const [filteredPatternManifests, setFilteredPatternManifests] = React.useState<PatternManifest[]>();
+  // const [filteredPatternManifests, setFilteredPatternManifests] = React.useState<PatternManifest[]>();
 
   // Used by modal view when a card is clicked
   const [modalVisible, setModalVisible] = React.useState(false);
   const [modalData, setModalData] = React.useState(null);
 
-  const [url, setUrl] = React.useState(new URL(location.toString()));
+  // URL for getting and setting search (query) parameters
+  const url = new URL(location.toString());
 
-  // Query parameters are used for filtering and showing a specific Pattern in a modal
-  const [queryParams, setQueryParams] = React.useState(url.searchParams);
+  // Create a new array with values from patternManifests that will be filtered
+  let filteredPatternManifests = [];
+  filteredPatternManifests.push(...patternManifests);
 
-  console.log("test");
+  // Filter by type
+  if (url.searchParams.get('type')) {
+    filteredPatternManifests = filteredPatternManifests.filter((item) => {
+      console.log(item.spec.pattern.type);
+      console.log(url.searchParams.get('type'));
+      return item.spec.pattern.type === url.searchParams.get('type')
+    });
+  }
 
-  const filterCatalog = () => {
-    // Create a new array with values from patternManifests that will be filtered
-    let newFilteredManifests = [];
-    newFilteredManifests.push(...patternManifests);
-
-    console.log({newFilteredManifests});
-
-    // Filter by type
-    if (queryParams.get('type')) {
-      newFilteredManifests.filter((item) => {
-        return item.spec.pattern.type === queryParams.get('type')
-      });
-    }
-    setFilteredPatternManifests(newFilteredManifests);
-  };
+  console.log(filteredPatternManifests);
 
   // Update queryParams if the query parameters in the URL have changed
-  const newUrl = new URL(location.toString());
-  if (newUrl.toJSON() !== url.toJSON()) {
-    setUrl(newUrl);
-    setQueryParams(newUrl.searchParams);
-    filterCatalog();
-  }
 
   // If detailsItem is set and matches a PatternManifest name, show the modal with data
   // for the given pattern.
-  const detailsItem = queryParams.get('details-item');
+  const detailsItem = url.searchParams.get('details-item');
   if (detailsItem && detailsItem !== modalData?.metadata?.name) {
     patternManifests.map((item) => {
       if (item.metadata.name === detailsItem) {
