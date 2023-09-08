@@ -44,9 +44,9 @@ For console plugin (React JS) development, you will also need:
 
 There are two ways to run the operator against a cluster for testing.
 
-You can run the operator controller on your local workstation against a remote 
-
-You can also run the operator controller on the cluster.
+* Run the operator controller on your local workstation against a remote
+  OpenShift cluster
+* Run the operator controller directly on an OpenShift
 
 ### Test your changes locally against a remote cluster
 
@@ -54,11 +54,16 @@ Run the operator on your machine from your local directory against a cluster's
 API.
 
 ```bash
+# Log in to OpenShift
 oc login
-oc apply -f ./config/crd/bases
-# For Linux amd64
+
+# Install CRDs, roles, etc.
+make install
+
+# Run on Linux amd64
 make run
-# For MacOS arm64 (M series)
+
+# Alternative to run on MacOS arm64 (M series)
 GOOS=darwin GOARCH=arm64 make run
 ```
 
