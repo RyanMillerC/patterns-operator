@@ -23,7 +23,20 @@ import PatternsCatalogFilter from './PatternsCatalogFilter';
 import Logo from '../img/hcp-logo.png';
 import * as queryUtils from '../queryUtils';
 
+// TODO: This is hacky! Fix it!
+// https://stackoverflow.com/questions/46240647/how-to-force-a-functional-react-component-to-render
+//create your forceUpdate hook
+function useForceUpdate(){
+    const [value, setValue] = React.useState(0); // integer state
+    return () => setValue(() => value + 1); // update state to force render
+    // A function that increment 👆🏻 the previous state like he
+    // is better than directly setting `setValue(value + 1)`
+}
+
 export default function PatternsCatalog() {
+  // TODO: This is hacky! Fix it!
+  const forceUpdate = useForceUpdate();
+
   // Get all PatternManifests through React hook
   const [patternManifests, loaded, loadError] = useK8sWatchResource<PatternManifest[]>({
     groupVersionKind: patternManifestKind,
@@ -134,6 +147,12 @@ export default function PatternsCatalog() {
 
   console.log("This should appear only once");
 
+  // TODO: Type this
+  const onSearch = (event: any) => {
+    queryUtils.setParam('search', event.target.value);
+    forceUpdate();
+  }
+
   return (
     <>
       <PageSection
@@ -146,6 +165,7 @@ export default function PatternsCatalog() {
         <div className="patterns-console-plugin__catalog_content">
           <SearchInput
             className="patterns-console-plugin__catalog_search"
+            onChange={onSearch}
             placeholder="Filter by keyword..."
           />
           <div className="patterns-console-plugin__cards">
