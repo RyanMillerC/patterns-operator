@@ -168,8 +168,7 @@ export default function PatternsCatalog() {
                   vendor={item.spec.organization.name}
                   description={item.spec.pattern.description}
                   onClick={() => {
-                    url.searchParams.set('details-item', item.metadata.name);
-                    window.history.pushState('', '', url.toString());
+                    queryUtils.setParam('details-item', item.metadata.name);
                     // TODO: Can probably take these out and have the logic looking at query parameters set this
                     setModalData(item);
                     setModalVisible(true);
@@ -186,8 +185,7 @@ export default function PatternsCatalog() {
         data={modalData}
         isOpen={modalVisible}
         onClose={() => {
-          url.searchParams.delete('details-item');
-          window.history.pushState('', '', url.toString());
+          queryUtils.deleteParam('details-item');
           setModalVisible(false);
         }}
       />
