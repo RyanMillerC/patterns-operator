@@ -23,6 +23,7 @@ import PatternsCatalogFilter from './PatternsCatalogFilter';
 import Logo from '../img/hcp-logo.png';
 
 export default function PatternsCatalog() {
+  // Get all PatternManifests through React hook
   const [patternManifests, loaded, loadError] = useK8sWatchResource<PatternManifest[]>({
     groupVersionKind: patternManifestKind,
     isList: true,
@@ -30,55 +31,47 @@ export default function PatternsCatalog() {
     namespaced: true,
   });
 
-  // TODO: Use this state object for filtering the catalog view
-  // const [displayedPatternManifests, setDisplayedPatternManifests] = React.useState<PatternManifest[]>();
+  // Used by search box and sidebar filters
+  const [filteredPatternManifests, setFilteredPatternManifests] = React.useState<PatternManifest[]>();
 
+  // Used by modal view when a card is clicked
   const [modalVisible, setModalVisible] = React.useState(false);
   const [modalData, setModalData] = React.useState(null);
 
-  if (loaded === false) {
-    return (
-      <>
-        <PageSection variant="light">Loading...</PageSection>
-      </>
-    );
-  }
-
-  if (loadError) {
-    return (
-      <>
-        <PageSection variant="light">ERROR: {loadError}</PageSection>
-      </>
-    );
-  }
-
-  if (loaded === true && patternManifests.length === 0) {
-    return (
-      <>
-        <PageSection variant="light">
-          <EmptyState>
-            <EmptyStateIcon icon={CubesIcon} />
-            <Title headingLevel="h4" size="lg">
-              No PatternManifests found
-            </Title>
-            <EmptyStateBody>
-              No PatternManifests exist in the <code>patterns-operator</code> namespace.
-              Import the default catalog.yaml or create a PatternCatalogSource
-              and point to and point to your own catalog.yaml.
-            </EmptyStateBody>
-          </EmptyState>
-        </PageSection>
-      </>
-    );
-  }
+  const [url, setUrl] = React.useState(new URL(location.toString()));
 
   // Query parameters are used for filtering and showing a specific Pattern in a modal
-  const url = new URL(location.toString());
+  const [queryParams, setQueryParams] = React.useState(url.searchParams);
+
+  console.log("test");
+
+  const filterCatalog = () => {
+    // Create a new array with values from patternManifests that will be filtered
+    let newFilteredManifests = [];
+    newFilteredManifests.push(...patternManifests);
+
+    console.log({newFilteredManifests});
+
+    // Filter by type
+    if (queryParams.get('type')) {
+      newFilteredManifests.filter((item) => {
+        return item.spec.pattern.type === queryParams.get('type')
+      });
+    }
+    setFilteredPatternManifests(newFilteredManifests);
+  };
+
+  // Update queryParams if the query parameters in the URL have changed
+  const newUrl = new URL(location.toString());
+  if (newUrl.toJSON() !== url.toJSON()) {
+    setUrl(newUrl);
+    setQueryParams(newUrl.searchParams);
+    filterCatalog();
+  }
 
   // If detailsItem is set and matches a PatternManifest name, show the modal with data
   // for the given pattern.
-  const detailsItem = url.searchParams.get('details-item');
-  console.log({detailsItem})
+  const detailsItem = queryParams.get('details-item');
   if (detailsItem && detailsItem !== modalData?.metadata?.name) {
     patternManifests.map((item) => {
       if (item.metadata.name === detailsItem) {
@@ -88,18 +81,48 @@ export default function PatternsCatalog() {
     });
   }
 
-  // TODO: Use this function to wire up catalog filtering
-  //
-  // const filterCatalog = () => {
-  //   let filteredPatternManifests = patternManifests;
-  //   const typeParam = url.searchParams.get('type');
-  //   if (typeParam) {
-  //     filteredPatternManifests.filter((item) => {
-  //       return item.spec.pattern.type === typeParam
-  //     });
-  //   }
-  //   setDisplayedPatternManifests(filteredPatternManifests);
-  // }
+  // TODO: This should return something better
+  if (loaded === false) {
+    console.log("Loading content");
+    return (
+      <>
+        <PageSection variant="light">Loading...</PageSection>
+      </>
+    );
+  }
+
+  // TODO: This should return something better
+  if (loadError) {
+    console.error(loadError);
+    return (
+      <>
+        <PageSection variant="light">ERROR: {loadError}</PageSection>
+      </>
+    );
+  }
+
+  // TODO: This is good; Let's move it to another file
+  if (loaded === true && filteredPatternManifests && filteredPatternManifests.length === 0) {
+    return (
+      <>
+        <PageSection variant="light">
+          <EmptyState>
+            <EmptyStateIcon icon={CubesIcon} />
+            <Title headingLevel="h4" size="lg">
+              No Matching PatternManifests found
+            </Title>
+            <EmptyStateBody>
+              No matching PatternManifests exist in the <code>patterns-operator</code>
+              namespace. Import the default catalog.yaml or create a PatternCatalogSource
+              and point to and point to your own catalog.yaml.
+            </EmptyStateBody>
+          </EmptyState>
+        </PageSection>
+      </>
+    );
+  }
+
+  console.log("This should appear only once");
 
   return (
     <>
@@ -116,7 +139,7 @@ export default function PatternsCatalog() {
             placeholder="Filter by keyword..."
           />
           <div className="patterns-console-plugin__cards">
-            {patternManifests.map((item) => {
+            {filteredPatternManifests.map((item) => {
               return (
                 <CatalogTile
                   className="patterns-console-plugin__card"
