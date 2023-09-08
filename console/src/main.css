@@ -93,6 +93,10 @@ can't use them in this plugin though... :/
   padding-left: 2rem;
 }
 
+.patterns-console-plugin__catalog_modal_button {
+  margin-right: .5rem;
+}
+
 .patterns-console-plugin__validated_badge {
   color: var(--pf-global--palette--green-400);
 }

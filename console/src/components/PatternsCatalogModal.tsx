@@ -46,8 +46,22 @@ export default function PatternsCatalogModel(props: PatternsCatalogModelProps) {
       className="patterns-console-plugin__catalog_modal"
     >
       <PageSection>
-        <Button onClick={onClick} key="confirm" variant="primary">
-          Deploy Pattern
+        <Button
+          className="patterns-console-plugin__catalog_modal_button"
+          key="deploy"
+          onClick={onClick}
+          variant="primary"
+          isDisabled
+        >
+          Deploy Pattern (Not yet implemented)
+        </Button>
+        <Button
+          className="patterns-console-plugin__catalog_modal_button"
+          key="deploycustom"
+          onClick={onClick}
+          variant="secondary"
+        >
+          Deploy with Customizations
         </Button>
       </PageSection>
       {/* TODO: This shouldn't be a div */}
