@@ -158,12 +158,29 @@ func (r *PatternCatalogSourceReconciler) Reconcile(ctx context.Context, req ctrl
 				},
 			}
 		}
+
+		// Set PatternManifest object attributes with values from remote catalog YAML file
+		orgMaintainers := []api.PatternManifestSpecMaintainer{}
+		for _, maintainer := range catalog.Organization.Maintainers {
+			maintainerObj := api.PatternManifestSpecMaintainer{
+				Name:  maintainer.Name,
+				Email: maintainer.Email,
+			}
+			orgMaintainers = append(orgMaintainers, maintainerObj)
+		}
+		patternMaintainers := []api.PatternManifestSpecMaintainer{}
+		for _, maintainer := range pattern.Maintainers {
+			maintainerObj := api.PatternManifestSpecMaintainer{
+				Name:  maintainer.Name,
+				Email: maintainer.Email,
+			}
+			patternMaintainers = append(patternMaintainers, maintainerObj)
+		}
 		patternManifest.Spec = api.PatternManifestSpec{
 			Organization: api.PatternManifestSpecOrganization{
 				Name:        catalog.Organization.Name,
 				Description: catalog.Organization.Description,
-				// TODO: Figure out how to get Maintainers working
-				Maintainers: []api.PatternManifestSpecMaintainer{},
+				Maintainers: orgMaintainers,
 				URL:         catalog.Organization.URL,
 			},
 			Pattern: api.PatternManifestSpecPattern{
@@ -172,13 +189,13 @@ func (r *PatternCatalogSourceReconciler) Reconcile(ctx context.Context, req ctrl
 				LongDescription: pattern.LongDescription,
 				Branch:          pattern.Branch,
 				GitRepo:         pattern.GitRepo,
-				// TODO: Figure out how to get Maintainers working
-				Maintainers: []api.PatternManifestSpecMaintainer{},
-				Products:    pattern.Products,
-				Type:        pattern.Type,
-				URL:         pattern.URL,
+				Maintainers:     patternMaintainers,
+				Products:        pattern.Products,
+				Type:            pattern.Type,
+				URL:             pattern.URL,
 			},
 		}
+
 		// Set owner reference for PatternManifest object so it's cleaned up if
 		// the PatternCatalogSource owner object is deleted.
 		err := controllerutil.SetControllerReference(instance, &patternManifest, r.Scheme)
