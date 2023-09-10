@@ -3,6 +3,16 @@ export const getUrl = () => {
   new URL(location.toString());
 }
 
+// Get a query parameter from the URL
+export const getParam = (name: string) => {
+  const url = new URL(location.toString());
+  const queryParam = url.searchParams.get(name);
+  if (queryParam) {
+    return queryParamToString(url.searchParams.get(name));
+  }
+  return null
+}
+
 // Set a query parameter in the URL. If the parameter already exists, overwrite it.
 export const setParam = (name: string, value: string) => {
   const url = new URL(location.toString());

@@ -1,16 +1,72 @@
 import * as React from 'react';
 import { FilterSidePanel, FilterSidePanelCategory, FilterSidePanelCategoryItem } from '@patternfly/react-catalog-view-extension';
 //import { TextInput } from '@patternfly/react-core';
+//
+
+import * as queryUtils from '../queryUtils';
 
 export default function PatternsCatalogFilter() {
   // TODO: Wire up filtering. At the moment this just looks nice and doesn't actually do anything
+  const toggleCheckbox = (event: any) => {
+    console.log(event);
+    const typeParam = queryUtils.getParam('type')
+    console.log(typeParam);
+  }
+
+  const filters = [
+    {
+      "key": "type",
+      "title": "Type",
+      "options": [
+        "Community",
+        "Validated"
+      ]
+    },
+    {
+      "key": "industries",
+      "title": "Industries",
+      "options": [
+        "Chemical",
+        "General",
+        "Industrial",
+        "Manufacturing",
+        "Medical",
+        "Retail"
+      ]
+    }
+  ]
+
   return (
     <FilterSidePanel>
+      {filters.map((filter) => {
+        return (
+          <FilterSidePanelCategory key={filter.key} title={filter.title}>
+            {filter.options.map((item) => {
+              return (
+                <FilterSidePanelCategoryItem
+                  key={item}
+                  count={2}
+                  checked={false}
+                  title={item}
+                  onClick={toggleCheckbox}
+                >
+                  {item}
+                </FilterSidePanelCategoryItem>
+              );
+            })}
+          </FilterSidePanelCategory>
+        );
+      })}
+    </FilterSidePanel>
+  );
+  /*
       <FilterSidePanelCategory key="type" title="Type">
         <FilterSidePanelCategoryItem
           key="community"
           count={2}
           checked={false}
+          title="Community"
+          onClick={toggleCheckbox}
         >
           Community
         </FilterSidePanelCategoryItem>
@@ -18,48 +74,43 @@ export default function PatternsCatalogFilter() {
           key="validated"
           count={3}
           checked={false}
+          onClick={toggleCheckbox}
         >
           Validated
         </FilterSidePanelCategoryItem>
       </FilterSidePanelCategory>
       <FilterSidePanelCategory key="type" title="Industries">
         <FilterSidePanelCategoryItem
-          key="chemical"
           count={2}
           checked={false}
         >
           Chemical
         </FilterSidePanelCategoryItem>
         <FilterSidePanelCategoryItem
-          key="general"
           count={3}
           checked={false}
         >
           General
         </FilterSidePanelCategoryItem>
         <FilterSidePanelCategoryItem
-          key="industrial"
           count={3}
           checked={false}
         >
           Industrial
         </FilterSidePanelCategoryItem>
         <FilterSidePanelCategoryItem
-          key="manufacturing"
           count={3}
           checked={false}
         >
           Manufacturing
         </FilterSidePanelCategoryItem>
         <FilterSidePanelCategoryItem
-          key="medical"
           count={3}
           checked={false}
         >
           Medical
         </FilterSidePanelCategoryItem>
         <FilterSidePanelCategoryItem
-          key="retail"
           count={3}
           checked={false}
         >
@@ -98,4 +149,5 @@ export default function PatternsCatalogFilter() {
       </FilterSidePanelCategory>
     </FilterSidePanel>
   )
+  */
 }

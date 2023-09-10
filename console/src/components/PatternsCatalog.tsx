@@ -145,8 +145,6 @@ export default function PatternsCatalog() {
     );
   }
 
-  console.log("This should appear only once");
-
   // TODO: Type this
   const onSearch = (event: any) => {
     queryUtils.setParam('search', event.target.value);
