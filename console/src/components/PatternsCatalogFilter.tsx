@@ -7,9 +7,14 @@ import * as queryUtils from '../queryUtils';
 
 export default function PatternsCatalogFilter() {
   const toggleCheckbox = (event: any) => {
-    const title = event.target.title
-    const [queryParam, value] = title.split('.')
-    queryUtils.set(queryParam, value);
+    const title = event.target.title;
+    const [queryParam, value] = title.split('.');
+    const existingQueryParam = queryUtils.list(queryParam);
+    if (existingQueryParam && existingQueryParam.includes(value)) {
+      queryUtils.pop(queryParam, value);
+    } else {
+      queryUtils.push(queryParam, value);
+    }
   }
 
   const filters = [
