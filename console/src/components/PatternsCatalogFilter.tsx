@@ -6,11 +6,10 @@ import { FilterSidePanel, FilterSidePanelCategory, FilterSidePanelCategoryItem }
 import * as queryUtils from '../queryUtils';
 
 export default function PatternsCatalogFilter() {
-  // TODO: Wire up filtering. At the moment this just looks nice and doesn't actually do anything
   const toggleCheckbox = (event: any) => {
-    console.log(event);
-    const typeParam = queryUtils.getParam('type')
-    console.log(typeParam);
+    const title = event.target.title
+    const [queryParam, value] = title.split('.')
+    queryUtils.setParam(queryParam, value);
   }
 
   const filters = [
@@ -47,7 +46,7 @@ export default function PatternsCatalogFilter() {
                   key={item}
                   count={2}
                   checked={false}
-                  title={item}
+                  title={`${filter.key}.${item}`}
                   onClick={toggleCheckbox}
                 >
                   {item}

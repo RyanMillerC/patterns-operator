@@ -1,3 +1,21 @@
+// Future Functions
+//
+// String Values:
+// * Get
+// * Set
+// * Delete
+//
+// Array Values:
+// * List // Get array
+// * Push // Add to array
+// * Pop  // Delete from array
+//
+// Helper Functions:
+// * ToString
+// * FromString
+// * ToArray
+// * FromArray
+
 // URL for getting and setting search (query) parameters
 export const getUrl = () => {
   new URL(location.toString());
