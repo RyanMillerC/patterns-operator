@@ -68,20 +68,20 @@ export default function PatternsCatalog() {
   }
 
   // Filter by Products
-  if (url.searchParams.get('products')) {
-    filteredPatternManifests = filteredPatternManifests.filter((item) => {
-      const queryProducts = queryUtils.queryParamToArray(url.searchParams.get('products'))
-      const itemProducts = item.spec.pattern.products
-      for (const queryProduct of queryProducts) {
-        if (itemProducts.indexOf(queryProduct) <= 0) {
-          console.log(`${queryProduct} is not in ${itemProducts}`);
-          console.log({itemProducts});
-          return false
-        }
-      }
-      return true
-    });
-  }
+  // if (url.searchParams.get('products')) {
+  //   filteredPatternManifests = filteredPatternManifests.filter((item) => {
+  //     const queryProducts = queryUtils.queryParamToArray(url.searchParams.get('products'))
+  //     const itemProducts = item.spec.pattern.products
+  //     for (const queryProduct of queryProducts) {
+  //       if (itemProducts.indexOf(queryProduct) <= 0) {
+  //         console.log(`${queryProduct} is not in ${itemProducts}`);
+  //         console.log({itemProducts});
+  //         return false
+  //       }
+  //     }
+  //     return true
+  //   });
+  // }
 
   // Filter by Search
   if (url.searchParams.get('search')) {
@@ -147,7 +147,7 @@ export default function PatternsCatalog() {
 
   // TODO: Type this
   const onSearch = (event: any) => {
-    queryUtils.setParam('search', event.target.value);
+    queryUtils.set('search', event.target.value);
     forceUpdate();
   }
 
@@ -186,7 +186,7 @@ export default function PatternsCatalog() {
                   vendor={item.spec.organization.name}
                   description={item.spec.pattern.description}
                   onClick={() => {
-                    queryUtils.setParam('details-item', item.metadata.name);
+                    queryUtils.set('details-item', item.metadata.name);
                     // TODO: Can probably take these out and have the logic looking at query parameters set this
                     setModalData(item);
                     setModalVisible(true);
@@ -203,7 +203,7 @@ export default function PatternsCatalog() {
         data={modalData}
         isOpen={modalVisible}
         onClose={() => {
-          queryUtils.deleteParam('details-item');
+          queryUtils.remove('details-item');
           setModalVisible(false);
         }}
       />

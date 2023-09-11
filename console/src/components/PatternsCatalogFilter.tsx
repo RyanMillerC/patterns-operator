@@ -9,7 +9,7 @@ export default function PatternsCatalogFilter() {
   const toggleCheckbox = (event: any) => {
     const title = event.target.title
     const [queryParam, value] = title.split('.')
-    queryUtils.setParam(queryParam, value);
+    queryUtils.set(queryParam, value);
   }
 
   const filters = [
