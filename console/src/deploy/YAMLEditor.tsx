@@ -12,7 +12,7 @@ import { Pattern, PatternModel } from '../data/pattern';
 
 import yaml from 'js-yaml';
 
-export default function PatternsDeployPage(props: any) {
+const YAMLEditor = (props: any) => {
   const [patternManifest, setPatternManifest] = React.useState<PatternManifest>();
   const [error, setError] = React.useState<string>();
 
@@ -151,6 +151,8 @@ export default function PatternsDeployPage(props: any) {
     </>
   );
 }
+
+export default YAMLEditor;
 
 // Shown while YAML editor is loading
 function ResourceYAMLEditorLoading() {

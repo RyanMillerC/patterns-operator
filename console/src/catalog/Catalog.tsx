@@ -1,13 +1,11 @@
 import * as React from 'react';
-// import { useHistory, useLocation } from 'react-router';
-// import { useHistory } from 'react-router';
 import {
-  SearchInput,
-  PageSection,
-  Title,
   EmptyState,
-  EmptyStateIcon,
   EmptyStateBody,
+  EmptyStateIcon,
+  PageSection,
+  SearchInput,
+  Title,
 } from '@patternfly/react-core';
 import { CatalogTile } from '@patternfly/react-catalog-view-extension';
 import { PatternManifest, patternManifestKind } from '../data/model';
@@ -15,10 +13,9 @@ import { PatternManifest, patternManifestKind } from '../data/model';
 import { useK8sWatchResource } from '@openshift-console/dynamic-plugin-sdk';
 // import { k8sCreate } from '@openshift-console/dynamic-plugin-sdk';
 import CubesIcon from '@patternfly/react-icons/dist/esm/icons/cubes-icon';
-import '../main.css';
-import PatternsCatalogModal from './PatternsCatalogModal';
-import PatternsCatalogItemBadge from './PatternsCatalogItemBadge';
-import PatternsCatalogFilter from './PatternsCatalogFilter';
+import Modal from './Modal';
+import CardBadge from './CardBadge';
+import Filter from './Filter';
 
 import Logo from '../img/hcp-logo.png';
 import * as queryUtils from '../queryUtils';
@@ -149,7 +146,7 @@ export default function PatternsCatalog() {
         variant="light"
       >
         <div className="patterns-console-plugin__catalog_side_panel">
-          <PatternsCatalogFilter />
+          <Filter />
         </div>
         <div className="patterns-console-plugin__catalog_content">
           <SearchInput
@@ -168,7 +165,7 @@ export default function PatternsCatalog() {
                   iconImg={Logo}
                   iconAlt="Hybrid Cloud Patterns Logo"
                   badges={[
-                    <PatternsCatalogItemBadge
+                    <CardBadge
                       key={0}
                       text={item.spec.pattern.type}
                     />,
@@ -190,7 +187,7 @@ export default function PatternsCatalog() {
       </PageSection>
 
       {/* Modal is only visible when a user clicks on a catalog item */}
-      <PatternsCatalogModal
+      <Modal
         data={modalData}
         isOpen={modalVisible}
         onClose={() => {

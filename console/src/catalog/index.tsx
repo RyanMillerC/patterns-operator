@@ -1,10 +1,10 @@
 import * as React from 'react';
 import Helmet from 'react-helmet';
 import { Page, PageSection, TextContent, Text, Title } from '@patternfly/react-core';
-import PatternsCatalog from '../components/PatternsCatalog';
+import Catalog from './Catalog';
 import '../main.css';
 
-export default function PatternsCatalogPage() {
+const CatalogPage = () => {
   // https://www.patternfly.org/v4/extensions/catalog-view/catalog-tile
   return (
     <>
@@ -34,8 +34,10 @@ export default function PatternsCatalogPage() {
             </Text>
           </TextContent>
         </PageSection>
-        <PatternsCatalog />
+        <Catalog />
       </Page>
     </>
   );
 }
+
+export default CatalogPage;

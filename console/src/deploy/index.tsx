@@ -1,10 +1,10 @@
 import * as React from 'react';
 import Helmet from 'react-helmet';
 import { Page, PageSection, TextContent, Text, Title } from '@patternfly/react-core';
-import DeployYAMLEditor from '../components/DeployYAMLEditor';
+import YAMLEditor from './YAMLEditor';
 import '../main.css';
 
-export default function PatternsDeployPage() {
+const DeployPage = () => {
   const searchParams = new URLSearchParams(document.location.search)
   const name = searchParams.get('name');
   return (
@@ -23,8 +23,10 @@ export default function PatternsDeployPage() {
         </PageSection>
 
         {/* Don't put DeployYAMLEditor inside a PageSection, it will make the height crazy short */}
-        <DeployYAMLEditor patternName={name} />
+        <YAMLEditor patternName={name} />
       </Page>
     </>
   );
 }
+
+export default DeployPage;

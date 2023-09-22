@@ -2,9 +2,9 @@ import * as React from 'react';
 import { CatalogTileBadge } from '@patternfly/react-catalog-view-extension';
 import CheckCircleIcon from '@patternfly/react-icons/dist/esm/icons/check-circle-icon';
 import Users from '@patternfly/react-icons/dist/esm/icons/users-icon';
-import '../main.css';
 
-export default function PatternsCatalogItemBadge(props) {
+// TODO: Should not be any type
+const CardBadge = (props: any) => {
   if (props.text === 'Validated') {
     return (
       <CatalogTileBadge className="patterns-console-plugin__validated_badge">
@@ -23,3 +23,5 @@ export default function PatternsCatalogItemBadge(props) {
 
   return <CatalogTileBadge>{props.text}</CatalogTileBadge>;
 }
+
+export default CardBadge;

@@ -62,8 +62,8 @@
     "displayName": "Patterns Dynamic Console Plugin",
     "description": "OpenShift dynamic console plugin for the Patterns Operator",
     "exposedModules": {
-      "PatternsCatalogPage": "./pages/PatternsCatalogPage",
-      "PatternsDeployPage": "./pages/PatternsDeployPage"
+      "Catalog": "./catalog",
+      "Deploy": "./deploy"
     },
     "dependencies": {
       "@console/pluginAPI": "*"

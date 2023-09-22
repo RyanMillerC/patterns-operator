@@ -4,7 +4,7 @@
     "properties": {
       "exact": true,
       "path": "/patterns/catalog",
-      "component": { "$codeRef": "PatternsCatalogPage" }
+      "component": { "$codeRef": "Catalog" }
     }
   },
   {
@@ -12,7 +12,7 @@
     "properties": {
       "exact": true,
       "path": "/patterns/deploy",
-      "component": { "$codeRef": "PatternsDeployPage" }
+      "component": { "$codeRef": "Deploy" }
     }
   },
   {
