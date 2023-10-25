@@ -19,8 +19,8 @@ spec:
   - name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: PatternCatalogSource points to a remote Catalog YAML manifest
-          that contains metadata about available patterns
+        description: PatternCatalogSource points to a remote Catalog YAML file that
+          contains metadata about an organization and one or more patterns
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation

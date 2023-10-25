@@ -30,7 +30,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Pattern is the Schema for the patterns API
+        description: Pattern is used to deploy a pattern against an OpenShift cluster
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation

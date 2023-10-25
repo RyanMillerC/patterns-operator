@@ -19,7 +19,8 @@ spec:
   - name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: PatternManifest is the Schema for the patternmanifests API
+        description: PatternManifest contains organization and pattern metadata for
+          a single pattern
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
