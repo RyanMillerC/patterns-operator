@@ -7,17 +7,15 @@ import {
   SearchInput,
   Title,
 } from '@patternfly/react-core';
-import { CatalogTile } from '@patternfly/react-catalog-view-extension';
 import { PatternManifest, patternManifestKind } from '../data/model';
 //import { PatternManifest, patternManifestKind, PatternManifestModel } from '../data/model';
 import { useK8sWatchResource } from '@openshift-console/dynamic-plugin-sdk';
 // import { k8sCreate } from '@openshift-console/dynamic-plugin-sdk';
 import CubesIcon from '@patternfly/react-icons/dist/esm/icons/cubes-icon';
 import Modal from './Modal';
-import CardBadge from './CardBadge';
 import Filter from './Filter';
 
-import Logo from '../img/hcp-logo.png';
+import CatalogItems from './CatalogItems';
 
 import { useQueryParams } from '../UseQueryParams';
 
@@ -162,29 +160,7 @@ export default function PatternsCatalog() {
             placeholder="Filter by keyword..."
           />
           <div className="patterns-console-plugin__cards">
-            {filteredPatternManifests.map((item) => {
-              return (
-                <CatalogTile
-                  className="patterns-console-plugin__card"
-                  key={item.metadata.name}
-                  id={item.metadata.name}
-                  iconImg={Logo}
-                  iconAlt="Hybrid Cloud Patterns Logo"
-                  badges={[
-                    <CardBadge
-                      key={0}
-                      text={item.spec.pattern.type}
-                    />,
-                  ]}
-                  title={item.spec.pattern.name}
-                  vendor={item.spec.organization.name}
-                  description={item.spec.pattern.description}
-                  onClick={() => {
-                    setQueryParam('detailsItem', item.metadata.name);
-                  }}
-                />
-              );
-            })}
+            <CatalogItems catalogItems={filteredPatternManifests} />
           </div>
         </div>
       </PageSection>
