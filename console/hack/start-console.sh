@@ -39,8 +39,13 @@ if [ -x "$(command -v podman)" ]; then
         BRIDGE_PLUGINS="${npm_package_consolePlugin_name}=http://localhost:9001"
         podman run --pull always --rm --network=host --env-file <(set | grep BRIDGE) $CONSOLE_IMAGE
     else
+        # NOTE: There is no arm64 console container image as of 2023-10-25. To
+        # run on an M-series Mac, I added --arch=amd64 so that it forces the
+        # amd64 image to pull. You will need to install qemu-user-static in
+        # your Podman machine with `sudo rpm-ostree install qemu-user-static`
+        # to be able to execute amd64 architecture images on an M-series Mac.
         BRIDGE_PLUGINS="${npm_package_consolePlugin_name}=http://host.containers.internal:9001"
-        podman run --pull always --rm -p "$CONSOLE_PORT":9000 --env-file <(set | grep BRIDGE) $CONSOLE_IMAGE
+        podman run --arch=amd64 --pull always --rm -p "$CONSOLE_PORT":9000 --env-file <(set | grep BRIDGE) $CONSOLE_IMAGE
     fi
 else
     BRIDGE_PLUGINS="${npm_package_consolePlugin_name}=http://host.docker.internal:9001"
