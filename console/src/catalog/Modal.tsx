@@ -35,10 +35,8 @@ export default function PatternsCatalogModel(props: PatternsCatalogModelProps) {
   return (
     <Modal
       isOpen={props.isOpen}
-      //hasNoBodyWrapper={true}
       onClose={props.onClose}
       title={data.spec.pattern.name}
-      // variant={ModalVariant.medium}
       className="patterns-console-plugin__catalog_modal"
     >
       <PageSection>

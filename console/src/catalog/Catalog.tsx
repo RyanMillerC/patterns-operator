@@ -18,18 +18,13 @@ import CardBadge from './CardBadge';
 import Filter from './Filter';
 
 import Logo from '../img/hcp-logo.png';
-import * as queryUtils from '../queryUtils';
-import { useForceUpdate } from '../forceUpdate';
 
 import { useQueryParams } from '../UseQueryParams';
 
 
 export default function PatternsCatalog() {
-  // TODO: This is hacky! Fix it!
-  const forceUpdate = useForceUpdate();
-
   // Get and set query parameters in the URL
-  const { queryParams } = useQueryParams();
+  const { queryParams, setQueryParam } = useQueryParams();
 
   // Get all PatternManifests through React hook
   const [patternManifests, loaded, loadError] = useK8sWatchResource<PatternManifest[]>({
@@ -83,15 +78,25 @@ export default function PatternsCatalog() {
     });
   }
 
+  console.log(queryParams)
+
   // If detailsItem is set and matches a PatternManifest name, show the modal with data
   // for the given pattern.
-  if ('detailsItem' in queryParams && queryParams.detailsItem !== modalData?.metadata?.name) {
-    patternManifests.map((item) => {
-      if (item.metadata.name === queryParams.detailsItem) {
-        setModalData(item);
-        setModalVisible(true);
-      }
-    });
+  if ('detailsItem' in queryParams) {
+    if (queryParams.detailsItem !== modalData?.metadata?.name) {
+      console.log('detailsItem');
+      patternManifests.map((item) => {
+        if (item.metadata.name === queryParams.detailsItem) {
+          setModalData(item);
+          setModalVisible(true);
+        }
+      });
+    }
+  } else {
+    if (modalVisible === true) {
+      setModalData(null);
+      setModalVisible(false);
+    }
   }
 
   // TODO: This should return something better
@@ -137,9 +142,9 @@ export default function PatternsCatalog() {
 
   // TODO: Type this
   const onSearch = (event: any) => {
-    queryUtils.set('search', event.target.value);
-    forceUpdate();
+    setQueryParam('search', event.target.value);
   }
+
 
   return (
     <>
@@ -163,7 +168,6 @@ export default function PatternsCatalog() {
                   className="patterns-console-plugin__card"
                   key={item.metadata.name}
                   id={item.metadata.name}
-                  // TODO: If we want an image, here's where it goes!
                   iconImg={Logo}
                   iconAlt="Hybrid Cloud Patterns Logo"
                   badges={[
@@ -176,10 +180,7 @@ export default function PatternsCatalog() {
                   vendor={item.spec.organization.name}
                   description={item.spec.pattern.description}
                   onClick={() => {
-                    queryUtils.set('details-item', item.metadata.name);
-                    // TODO: Can probably take these out and have the logic looking at query parameters set this
-                    setModalData(item);
-                    setModalVisible(true);
+                    setQueryParam('detailsItem', item.metadata.name);
                   }}
                 />
               );
@@ -193,8 +194,7 @@ export default function PatternsCatalog() {
         data={modalData}
         isOpen={modalVisible}
         onClose={() => {
-          queryUtils.remove('details-item');
-          setModalVisible(false);
+          setQueryParam('detailsItem', null);
         }}
       />
     </>

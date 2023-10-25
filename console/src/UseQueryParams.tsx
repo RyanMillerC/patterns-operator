@@ -22,7 +22,11 @@ export const QueryParamsProvider: React.FC<React.PropsWithChildren<any>> = (prop
     (key: string, value: any) => {
       setQueryParams((p) => {
         const newParams = { ...p };
-        newParams[key] = value;
+        if (!value) {
+          delete newParams[key];
+        } else {
+          newParams[key] = value;
+        }
         return newParams;
       });
     },
