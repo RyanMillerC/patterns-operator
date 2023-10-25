@@ -21,9 +21,15 @@ import Logo from '../img/hcp-logo.png';
 import * as queryUtils from '../queryUtils';
 import { useForceUpdate } from '../forceUpdate';
 
+import { useQueryParams } from '../UseQueryParams';
+
+
 export default function PatternsCatalog() {
   // TODO: This is hacky! Fix it!
   const forceUpdate = useForceUpdate();
+
+  // Get and set query parameters in the URL
+  const { queryParams } = useQueryParams();
 
   // Get all PatternManifests through React hook
   const [patternManifests, loaded, loadError] = useK8sWatchResource<PatternManifest[]>({
@@ -40,18 +46,15 @@ export default function PatternsCatalog() {
   const [modalVisible, setModalVisible] = React.useState(false);
   const [modalData, setModalData] = React.useState(null);
 
-  // URL for getting and setting search (query) parameters
-  const url = new URL(location.toString());
-
   // Create a new array with values from patternManifests. This array will be
   // filtered and remaining objects in the array will be displayed.
   let filteredPatternManifests = [];
   filteredPatternManifests.push(...patternManifests);
 
   // Filter by type
-  if (url.searchParams.get('type')) {
+  if ('type' in queryParams) {
     filteredPatternManifests = filteredPatternManifests.filter((item) => {
-      return item.spec.pattern.type === url.searchParams.get('type')
+      return item.spec.pattern.type === queryParams.type
     });
   }
 
@@ -72,20 +75,19 @@ export default function PatternsCatalog() {
   // }
 
   // Filter by Search
-  if (url.searchParams.get('search')) {
+  if ('search' in queryParams) {
     filteredPatternManifests = filteredPatternManifests.filter((item) => {
       const lowercasePatternName = item.spec.pattern.name.toLowerCase();
-      const lowercaseSearchParam = url.searchParams.get('search').toLowerCase();
+      const lowercaseSearchParam = queryParams.search.toLowerCase();
       return lowercasePatternName.includes(lowercaseSearchParam);
     });
   }
 
   // If detailsItem is set and matches a PatternManifest name, show the modal with data
   // for the given pattern.
-  const detailsItem = url.searchParams.get('details-item');
-  if (detailsItem && detailsItem !== modalData?.metadata?.name) {
+  if ('detailsItem' in queryParams && queryParams.detailsItem !== modalData?.metadata?.name) {
     patternManifests.map((item) => {
-      if (item.metadata.name === detailsItem) {
+      if (item.metadata.name === queryParams.detailsItem) {
         setModalData(item);
         setModalVisible(true);
       }
