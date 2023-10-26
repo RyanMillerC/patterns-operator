@@ -1,3 +1,9 @@
+/*
+
+!!! Don't use this file, it will be deleted! UseQueryParams instead! !!!
+
+*/
+
 // Future Functions
 //
 // String Values:
