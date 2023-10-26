@@ -11,28 +11,32 @@ const Filter = (props: any) => {
 
   const forceUpdate = useForceUpdate();
 
-  const filters = [
-    {
-      "key": "type",
+  // Filters on the sidebar will be displayed in the order they appear in this object
+  // TODO: Not sure about JS but in other languages objects aren't guaranteed to
+  // remain ordered. This might need adjusted.
+  const filters = {
+    "type": {
       "title": "Type",
-      "options": []
+      "options": [],
     },
-    /*
-    {
-      "key": "industries",
-      "title": "Industries",
-      "options": []
-    }
-    */
-  ];
+    "product": {
+      "title": "Product",
+      "options": [],
+    },
+  };
 
-  filters.forEach((filter, index) => {
-    items.forEach((item: PatternManifest) => {
-      // Type
-      if (!filter.options.includes(item.spec.pattern.type)) {
-        filters[index].options.push(item.spec.pattern.type);
+  items.forEach((item: PatternManifest) => {
+    // Product
+    item.spec.pattern.products.forEach((product) => {
+      if (!filters.product.options.includes(product)) {
+        filters.product.options.push(product);
       }
     });
+
+    // Type
+    if (!filters.type.options.includes(item.spec.pattern.type)) {
+      filters.type.options.push(item.spec.pattern.type);
+    }
   });
 
   const toggleCheckbox = (event: any) => {
@@ -60,11 +64,11 @@ const Filter = (props: any) => {
 
   return (
     <FilterSidePanel>
-      {filters.map((filter) => {
+      {Object.entries(filters).map(([key, value]) => {
         return (
-          <FilterSidePanelCategory key={filter.key} title={filter.title}>
-            {filter.options.map((item) => {
-              const title = `${filter.key}.${item}`
+          <FilterSidePanelCategory key={key} title={value.title}>
+            {value.options.map((item) => {
+              const title = `${key}.${item}`
               return (
                 <FilterSidePanelCategoryItem
                   key={item}
