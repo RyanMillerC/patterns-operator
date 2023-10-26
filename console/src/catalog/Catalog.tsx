@@ -121,7 +121,7 @@ export default function PatternsCatalog() {
         variant="light"
       >
         <div className="patterns-console-plugin__catalog_side_panel">
-          <Filter />
+          <Filter items={patternManifests} />
         </div>
         <div className="patterns-console-plugin__catalog_content">
           <SearchInput

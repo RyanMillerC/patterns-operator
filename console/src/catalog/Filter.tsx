@@ -3,32 +3,37 @@ import { FilterSidePanel, FilterSidePanelCategory, FilterSidePanelCategoryItem }
 
 import * as queryUtils from '../queryUtils';
 import { useForceUpdate } from '../forceUpdate';
+import { PatternManifest } from 'src/data/model';
 
-const Filter = () => {
+// TODO: Type this
+const Filter = (props: any) => {
+  const { items } = props;
+
   const forceUpdate = useForceUpdate();
 
   const filters = [
     {
       "key": "type",
       "title": "Type",
-      "options": [
-        "Community",
-        "Validated"
-      ]
+      "options": []
     },
+    /*
     {
       "key": "industries",
       "title": "Industries",
-      "options": [
-        "Chemical",
-        "General",
-        "Industrial",
-        "Manufacturing",
-        "Medical",
-        "Retail"
-      ]
+      "options": []
     }
+    */
   ];
+
+  filters.forEach((filter, index) => {
+    items.forEach((item: PatternManifest) => {
+      // Type
+      if (!filter.options.includes(item.spec.pattern.type)) {
+        filters[index].options.push(item.spec.pattern.type);
+      }
+    });
+  });
 
   const toggleCheckbox = (event: any) => {
     const title = event.target.title;
@@ -63,7 +68,6 @@ const Filter = () => {
               return (
                 <FilterSidePanelCategoryItem
                   key={item}
-                  count={2}
                   checked={checked(title)}
                   title={title}
                   onClick={toggleCheckbox}
