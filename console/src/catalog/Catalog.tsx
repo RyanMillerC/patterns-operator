@@ -1,17 +1,12 @@
 import * as React from 'react';
 import {
-  EmptyState,
-  EmptyStateBody,
-  EmptyStateIcon,
   PageSection,
   SearchInput,
-  Title,
 } from '@patternfly/react-core';
 import { PatternManifest, patternManifestKind } from '../data/model';
 //import { PatternManifest, patternManifestKind, PatternManifestModel } from '../data/model';
 import { useK8sWatchResource } from '@openshift-console/dynamic-plugin-sdk';
 // import { k8sCreate } from '@openshift-console/dynamic-plugin-sdk';
-import CubesIcon from '@patternfly/react-icons/dist/esm/icons/cubes-icon';
 import Modal from './Modal';
 import Filter from './Filter';
 
@@ -113,27 +108,6 @@ export default function PatternsCatalog() {
     return (
       <>
         <PageSection variant="light">ERROR: {loadError}</PageSection>
-      </>
-    );
-  }
-
-  // TODO: This is good; Let's move it to another file
-  if (loaded === true && filteredPatternManifests && filteredPatternManifests.length === 0) {
-    return (
-      <>
-        <PageSection variant="light">
-          <EmptyState>
-            <EmptyStateIcon icon={CubesIcon} />
-            <Title headingLevel="h4" size="lg">
-              No Matching PatternManifests found
-            </Title>
-            <EmptyStateBody>
-              No matching PatternManifests exist in the <code>patterns-operator</code>
-              namespace. Import the default catalog.yaml or create a PatternCatalogSource
-              and point to and point to your own catalog.yaml.
-            </EmptyStateBody>
-          </EmptyState>
-        </PageSection>
       </>
     );
   }
