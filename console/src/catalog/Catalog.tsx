@@ -9,6 +9,8 @@ import { useK8sWatchResource } from '@openshift-console/dynamic-plugin-sdk';
 // import { k8sCreate } from '@openshift-console/dynamic-plugin-sdk';
 import Modal from './Modal';
 import Filter from './Filter';
+import Loading from './Loading';
+import Error from './Error';
 
 import CatalogItems from './CatalogItems';
 
@@ -73,8 +75,7 @@ export default function PatternsCatalog() {
 
   console.log(queryParams)
 
-  // If detailsItem is set and matches a PatternManifest name, show the modal with data
-  // for the given pattern.
+  // If detailsItem is set, show the modal with data from the matching PatternManifest
   if ('detailsItem' in queryParams) {
     if (queryParams.detailsItem !== modalData?.metadata?.name) {
       console.log('detailsItem');
@@ -92,31 +93,26 @@ export default function PatternsCatalog() {
     }
   }
 
-  // TODO: This should return something better
-  if (loaded === false) {
-    console.log("Loading content");
-    return (
-      <>
-        <PageSection variant="light">Loading...</PageSection>
-      </>
-    );
-  }
-
-  // TODO: This should return something better
-  if (loadError) {
-    console.error(loadError);
-    return (
-      <>
-        <PageSection variant="light">ERROR: {loadError}</PageSection>
-      </>
-    );
-  }
-
+  // Called when search box is typed into
   // TODO: Type this
   const onSearch = (event: any) => {
     setQueryParam('search', event.target.value);
   }
 
+  // Show loading page instead of catalog while loading PatternManifests from OCP API
+  if (loaded === false) {
+    return (
+      <Loading />
+    );
+  }
+
+  // Show error message instead of catalog if an error loading PatternManifests occurred
+  if (loadError) {
+    console.error(loadError);
+    return (
+      <Error error={loadError} />
+    );
+  }
 
   return (
     <>

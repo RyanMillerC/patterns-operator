@@ -1,26 +1,18 @@
 import * as React from 'react';
 import {
-  EmptyState,
-  EmptyStateBody,
-  EmptyStateIcon,
+  PageSection,
   Title,
 } from '@patternfly/react-core';
-import CubesIcon from '@patternfly/react-icons/dist/esm/icons/cubes-icon';
 
 const Loading = () => {
+  // TODO: This should be styled better. Maybe a skeleton page or loading GIF?
   return (
     <>
-      <EmptyState>
-        <EmptyStateIcon icon={CubesIcon} />
+      <PageSection>
         <Title headingLevel="h4" size="lg">
-          No Matching PatternManifests found
+          Loading...
         </Title>
-        <EmptyStateBody>
-          No matching PatternManifests exist in the <code>patterns-operator</code>
-          namespace. Import the default catalog.yaml or create a PatternCatalogSource
-          and point to and point to your own catalog.yaml.
-        </EmptyStateBody>
-      </EmptyState>
+      </PageSection>
     </>
   );
 }
