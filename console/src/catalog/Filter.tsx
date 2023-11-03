@@ -2,14 +2,14 @@ import * as React from 'react';
 import { FilterSidePanel, FilterSidePanelCategory, FilterSidePanelCategoryItem } from '@patternfly/react-catalog-view-extension';
 
 import * as queryUtils from '../queryUtils';
-import { useForceUpdate } from '../forceUpdate';
 import { PatternManifest } from 'src/data/model';
+import { useQueryParams } from '../UseQueryParams';
 
 // TODO: Type this
 const Filter = (props: any) => {
   const { items } = props;
 
-  const forceUpdate = useForceUpdate();
+  const { queryParams, setQueryParam } = useQueryParams();
 
   // Filters on the sidebar will be displayed in the order they appear in this object
   // TODO: Not sure about JS but in other languages objects aren't guaranteed to
@@ -42,15 +42,21 @@ const Filter = (props: any) => {
   const toggleCheckbox = (event: any) => {
     const title = event.target.title;
     const [name, value] = title.split('.');
-    const queryParam = queryUtils.list(name);
-    if (queryParam && queryParam.includes(value)) {
-      console.log(`Popping ${value} from ${queryParam}`);
-      queryUtils.pop(name, value);
+    const queryParam = queryParams[name];
+
+    console.log("Look at me!");
+    console.log(queryParam[0]);
+
+    if (!queryParam) {
+      const newQueryParam = [value];
+      setQueryParam(name, newQueryParam);
+    } else if (queryParam.includes(value)) {
+      const newQueryParam = queryParam.filter((item: string) => item !== value)
+      setQueryParam(name, newQueryParam);
     } else {
-      console.log(`Pushing ${value} to ${queryParam}`);
-      queryUtils.push(name, value);
+      const newQueryParam = queryParam.push(value);
+      setQueryParam(name, newQueryParam);
     }
-    forceUpdate();
   };
 
   const checked = (title: string) => {

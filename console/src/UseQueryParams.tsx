@@ -66,7 +66,13 @@ const QueryParamsContext = React.createContext<QueryParamsContextValue | undefin
 
 const getParamsFromURL = (): Record<string, any> => {
   const url = new URL(window.location.href);
-  return Object.fromEntries(url.searchParams.entries());
+  const queryParams = Object.fromEntries(url.searchParams.entries());
+  const arrayfiedQueryParams = Object.fromEntries(
+    Object.entries(queryParams).map(([key, value]) => {
+      return [key, JSON.parse(value)]; // This seems like it's working
+    })
+  );
+  return arrayfiedQueryParams;
 };
 
 // Wrap top level component in this to provide context
@@ -79,7 +85,7 @@ export const QueryParamsProvider: React.FC<React.PropsWithChildren<any>> = (prop
     (key: string, value: any) => {
       setQueryParams((p) => {
         const newParams = { ...p };
-        if (!value) {
+        if (!value || value.length <= 0) {
           delete newParams[key];
         } else {
           newParams[key] = value;
@@ -92,8 +98,13 @@ export const QueryParamsProvider: React.FC<React.PropsWithChildren<any>> = (prop
 
   // Update query string in the URL
   React.useEffect(() => {
+    const stringifiedQueryParams = Object.fromEntries(
+      Object.entries(queryParams).map(([key, value]) => {
+        return [key, JSON.stringify(value)];
+      })
+    );
     const url = new URL(window.location.href);
-    url.search = new URLSearchParams(queryParams).toString();
+    url.search = new URLSearchParams(stringifiedQueryParams).toString();
     window.history.pushState({}, "", url.toString());
   }, [queryParams]);
 
